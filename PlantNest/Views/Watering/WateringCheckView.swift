@@ -9,13 +9,9 @@ import SwiftUI
 
 struct WateringCheckView: View {
     
-    @State private var selectedSoilCondition: String?
+    @State private var selectedSoilCondition: SoilCondition?
     
-    let soilConditionOptions = [
-        "Dry",
-        "Slightly Moist",
-        "Wet"
-    ]
+    private let assessWateringNeedUseCase = AssessWateringNeedUseCase()
     
     var body: some View {
         Form {
@@ -30,16 +26,16 @@ struct WateringCheckView: View {
             Section("Check the soil") {
                 Text("How does the top soil feel?")
                 
-                ForEach(soilConditionOptions, id: \.self) { option in
+                ForEach(SoilCondition.allCases, id: \.self) { condition in
                     Button {
-                        selectedSoilCondition = option
+                        selectedSoilCondition = condition
                     } label: {
                         HStack {
-                            Text(option)
+                            Text(condition.rawValue)
                             
                             Spacer()
                             
-                            if selectedSoilCondition == option {
+                            if selectedSoilCondition == condition {
                                 Image(systemName: "checkmark")
                             }
                         }
@@ -58,20 +54,12 @@ struct WateringCheckView: View {
     }
     
     private var recommendation: String? {
-        switch selectedSoilCondition {
-            case "Dry":
-                return "The soil is dry. Monty may be ready for watering."
-
-            case "Slightly Moist":
-                return "The soil is still slightly moist. Wait before watering."
-
-            case "Wet":
-                return "The soil is wet. Do not water Monty yet."
-
-            default:
-                return nil
-            }
+        guard selectedSoilCondition != nil else {
+            return nil
         }
+        
+        return try? assessWateringNeedUseCase.execute(soilCondition: selectedSoilCondition)
+    }
 }
 
 #Preview {
