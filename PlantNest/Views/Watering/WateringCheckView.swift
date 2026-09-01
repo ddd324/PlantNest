@@ -9,9 +9,7 @@ import SwiftUI
 
 struct WateringCheckView: View {
     
-    @State private var selectedSoilCondition: SoilCondition?
-    
-    private let assessWateringNeedUseCase = AssessWateringNeedUseCase()
+    @StateObject private var viewModel = CareViewModel()
     
     var body: some View {
         Form {
@@ -28,14 +26,14 @@ struct WateringCheckView: View {
                 
                 ForEach(SoilCondition.allCases, id: \.self) { condition in
                     Button {
-                        selectedSoilCondition = condition
+                        viewModel.selectSoilCondition(condition)
                     } label: {
                         HStack {
                             Text(condition.rawValue)
                             
                             Spacer()
                             
-                            if selectedSoilCondition == condition {
+                            if viewModel.selectedSoilCondition == condition {
                                 Image(systemName: "checkmark")
                             }
                         }
@@ -43,7 +41,7 @@ struct WateringCheckView: View {
                 }
             }
             
-            if let recommendation = recommendation {
+            if let recommendation = viewModel.recommendation {
                 Section("Recomendation") {
                     Text(recommendation)
                 }
@@ -53,13 +51,6 @@ struct WateringCheckView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
     
-    private var recommendation: String? {
-        guard selectedSoilCondition != nil else {
-            return nil
-        }
-        
-        return try? assessWateringNeedUseCase.execute(soilCondition: selectedSoilCondition)
-    }
 }
 
 #Preview {

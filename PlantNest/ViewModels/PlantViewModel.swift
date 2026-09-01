@@ -1,0 +1,27 @@
+//
+//  PlantViewModel.swift
+//  PlantNest
+//
+//  Created by Djy on 01/09/2026.
+//
+
+import Foundation
+import Combine
+
+final class PlantViewModel: ObservableObject {
+    @Published var plants: [Plant] = []
+    
+    private let repository: PlantRepository
+    
+    init(repository: PlantRepository = LocalPlantRepository()) {
+        self.repository = repository
+    }
+    
+    func loadPlants() {
+        do {
+            plants = try repository.fetchPlants()
+        } catch {
+            print("Failed to load plants: \(error)")
+        }
+    }
+}
