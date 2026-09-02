@@ -13,20 +13,26 @@ struct AssessWateringNeedUseCase {
         case missingSoilCondition
     }
     
-    func execute(plant: Plant, soilCondition: SoilCondition?) throws -> String {
+    struct WateringRecommendation {
+        let message: String
+        let shouldWater: Bool
+    }
+    
+    func execute(plant: Plant, soilCondition: SoilCondition?) throws -> WateringRecommendation? {
         guard let soilCondition else {
             throw AssessWateringError.missingSoilCondition
         }
         
         switch soilCondition {
         case .dry:
-            return "The soil is dry. \(plant.name) may be ready for watering."
+            return WateringRecommendation(message: "The soil is dry. \(plant.name) may be ready for watering.", shouldWater: true)
+            
 
         case .slightlyMoist:
-            return "The soil is still slightly moist. Wait before watering \(plant.name)."
+            return WateringRecommendation(message: "The soil is still slightly moist. Wait before watering \(plant.name).", shouldWater: false)
 
         case .wet:
-            return "The soil is wet. Do not water \(plant.name) yet."
+            return WateringRecommendation(message: "The soil is wet. Do not water \(plant.name) yet.", shouldWater: false)
         }
     }
 }

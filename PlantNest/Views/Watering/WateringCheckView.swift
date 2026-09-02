@@ -41,7 +41,20 @@ struct WateringCheckView: View {
             
             if let recommendation = viewModel.recommendation {
                 Section("Recomendation") {
-                    Text(recommendation)
+                    Text(recommendation.message)
+                    
+                    if recommendation.shouldWater {
+                        Button("Record Watering") {
+                            viewModel.recordwatering(for: plant)
+                        }
+                    }
+                }
+            }
+            
+            if let recordMessage = viewModel.recordMessage {
+                Section {
+                    Text(recordMessage)
+                        .foregroundStyle(.secondary)
                 }
             }
         }
