@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct RootView: View {
+    
+    @StateObject private var careRepository = LocalCareRepository()
+    
     var body: some View {
         TabView {
             Tab("Home", systemImage: "house.fill") {
@@ -22,6 +25,7 @@ struct RootView: View {
                 }
             }
         }
+        .environmentObject(careRepository)
         .tint(.green)
     }
     

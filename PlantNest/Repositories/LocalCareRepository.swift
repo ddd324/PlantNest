@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Combine
 
-final class LocalCareRepository: CareRepository {
+final class LocalCareRepository: CareRepository, ObservableObject {
     
     private var records: [CareRecord] = []
     

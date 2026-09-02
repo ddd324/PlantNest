@@ -20,12 +20,10 @@ final class CareViewModel: ObservableObject {
     
     private let assessWateringNeedUseCase: AssessWateringNeedUseCase
     private let generateCarePlanUseCase: GenerateCarePlanUseCase
-    private let recordCareActivityUseCase: RecordCareActivityUseCase
     
-    init(assessWateringNeedUseCase: AssessWateringNeedUseCase = AssessWateringNeedUseCase(), generateCarePlanUseCase: GenerateCarePlanUseCase = GenerateCarePlanUseCase(), recordCareActivityUseCase: RecordCareActivityUseCase = RecordCareActivityUseCase(repository: LocalCareRepository())) {
+    init(assessWateringNeedUseCase: AssessWateringNeedUseCase = AssessWateringNeedUseCase(), generateCarePlanUseCase: GenerateCarePlanUseCase = GenerateCarePlanUseCase()) {
         self.assessWateringNeedUseCase = assessWateringNeedUseCase
         self.generateCarePlanUseCase = generateCarePlanUseCase
-        self.recordCareActivityUseCase = recordCareActivityUseCase
     }
     
     func selectSoilCondition(_ condition: SoilCondition, for plant: Plant) {
@@ -47,9 +45,12 @@ final class CareViewModel: ObservableObject {
         }
     }
     
-    func recordwatering(for plant: Plant) {
+    func recordwatering(for plant: Plant, repository: CareRepository) {
+        
+        let useCase = RecordCareActivityUseCase(repository: repository)
+        
         do {
-            _ = try recordCareActivityUseCase.execute(plant: plant, activityType: .watering)
+            _ = try useCase.execute(plant: plant, activityType: .watering)
             recordMessage = "Watering recorded successfully."
         } catch RecordCareActivityUseCase.RecordCareActivityError.duplicateRecord {
             recordMessage = "Watering has already been recorded today."

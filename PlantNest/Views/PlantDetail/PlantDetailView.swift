@@ -30,6 +30,14 @@ struct PlantDetailView: View {
                 LabeledContent("Watering interval", value: "\(plant.wateringIntervalDays) days")
                 LabeledContent("Last watered", value: plant.lastWateredDate.formatted(date: .abbreviated, time: .omitted))
             }
+            
+            Section("History") {
+                NavigationLink {
+                    CareHistoryView(plant: plant)
+                } label: {
+                    Label("Care History", systemImage: "clock.arrow.circlepath")
+                }
+            }
         }
         .navigationTitle(plant.name)
         .navigationBarTitleDisplayMode(.inline)
@@ -46,4 +54,5 @@ struct PlantDetailView: View {
             wateringIntervalDays: 7
         ))
     }
+    .environmentObject(LocalCareRepository())
 }

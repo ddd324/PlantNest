@@ -11,6 +11,7 @@ struct WateringCheckView: View {
     
     let plant: Plant
     
+    @EnvironmentObject private var careRepository: LocalCareRepository
     @StateObject private var viewModel = CareViewModel()
     
     var body: some View {
@@ -45,7 +46,7 @@ struct WateringCheckView: View {
                     
                     if recommendation.shouldWater {
                         Button("Record Watering") {
-                            viewModel.recordwatering(for: plant)
+                            viewModel.recordwatering(for: plant, repository: careRepository)
                         }
                     }
                 }
