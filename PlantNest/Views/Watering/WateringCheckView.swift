@@ -9,24 +9,22 @@ import SwiftUI
 
 struct WateringCheckView: View {
     
+    let plant: Plant
+    
     @StateObject private var viewModel = CareViewModel()
     
     var body: some View {
         Form {
             Section("Plant") {
-                Text("Monty")
-                    .font(.headline)
+                LabeledContent("Name", value: plant.name)
                 
-                Text("Last waterd 7 days ago")
-                    .foregroundStyle(.secondary)
+                LabeledContent("Last watered", value: plant.lastWateredDate.formatted(date: .abbreviated, time: .omitted))
             }
             
             Section("Check the soil") {
-                Text("How does the top soil feel?")
-                
                 ForEach(SoilCondition.allCases, id: \.self) { condition in
                     Button {
-                        viewModel.selectSoilCondition(condition)
+                        viewModel.selectSoilCondition(condition, for: plant)
                     } label: {
                         HStack {
                             Text(condition.rawValue)
@@ -55,6 +53,14 @@ struct WateringCheckView: View {
 
 #Preview {
     NavigationStack {
-        WateringCheckView()
+        WateringCheckView(
+            plant: Plant(
+                name: "Monty",
+                species: "Monstera deliciosa",
+                imageName: "monstera",
+                lastWateredDate: Date(),
+                wateringIntervalDays: 7
+            )
+        )
     }
 }
