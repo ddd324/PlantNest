@@ -13,28 +13,49 @@ struct GenerateCarePlanUseCase {
         case invalidWateringInterval
     }
     
+    struct UpcomingCareItem: Identifiable {
+        let plant: Plant
+        let daysRemaining: Int
+        var id: UUID {
+            plant.id
+        }
+    }
+    
     struct CarePlan {
         let dueToday: [Plant]
-        let upcoming: [Plant]
+        let upcoming: [UpcomingCareItem]
     }
     
     func execute(plants: [Plant], currentDate: Date = Date()) throws -> CarePlan {
         
         var dueToday: [Plant] = []
-        var upcoming: [Plant] = []
+        var upcoming: [UpcomingCareItem] = []
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: currentDate)
         
         for plant in plants {
             guard plant.wateringIntervalDays > 0 else {
                 throw GenerateCarePlanError.invalidWateringInterval
             }
             
-            let nextWateringDate = Calendar.current.date(byAdding: .day, value: plant.wateringIntervalDays, to: plant.lastWateredDate) ?? plant.lastWateredDate
+            guard let nextWateringDate = calendar.date(byAdding: .day, value: plant.wateringIntervalDays, to: plant.lastWateredDate) else {
+                continue
+            }
             
-            if nextWateringDate <= currentDate {
+            let nextWateringDay = calendar.startOfDay(for: nextWateringDate)
+            
+            let daysRemaining = calendar.dateComponents([.day], from: today, to: nextWateringDay).day ?? 0
+            
+            if daysRemaining <= 0 {
                 dueToday.append(plant)
             } else {
-                upcoming.append(plant)
+                upcoming.append(UpcomingCareItem(plant: plant, daysRemaining: daysRemaining))
             }
+        }
+        
+        upcoming.sort {
+            $0.daysRemaining < $1.daysRemaining
         }
         
         return CarePlan(dueToday: dueToday, upcoming: upcoming)

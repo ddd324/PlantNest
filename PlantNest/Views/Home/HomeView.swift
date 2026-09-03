@@ -41,17 +41,23 @@ struct HomeView: View {
                     Text("No upcoming care tasks")
                         .foregroundStyle(.secondary)
                 } else {
-                    ForEach(careViewModel.upcoming) { plant in
+                    ForEach(careViewModel.upcoming) { item in
                         NavigationLink {
-                            PlantDetailView(plant: plant)
+                            PlantDetailView(plant: item.plant)
                         } label: {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(plant.name)
+                                Text(item.plant.name)
                                     .font(.headline)
                                 
-                                Text(plant.species)
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
+                                if item.daysRemaining == 1 {
+                                    Text("Water tomorrow")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                } else {
+                                    Text("Water in \(item.daysRemaining) days")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                }
                             }
                         }
                     }

@@ -4,7 +4,7 @@
         "name": "Monty",
         "species": "Monstera deliciosa",
         "imageName": "monstera",
-        "lastWateredDate": "2026-08-27",
+        "lastWateredDate": "2026-08-25",
         "wateringIntervalDays": 7
     },
     {
@@ -12,7 +12,7 @@
         "name": "Sunny",
         "species": "Snake Plant",
         "imageName": "snakePlant",
-        "lastWateredDate": "2026-08-22",
+        "lastWateredDate": "2026-08-28",
         "wateringIntervalDays": 14
     },
     {
@@ -20,7 +20,47 @@
         "name": "Lily",
         "species": "Peace Lily",
         "imageName": "peaceLily",
-        "lastWateredDate": "2026-08-28",
+        "lastWateredDate": "2026-08-29",
         "wateringIntervalDays": 5
+    },
+    {
+        "id": "44444444-4444-4444-4444-444444444444",
+        "name": "Penny",
+        "species": "Golden Pothos",
+        "imageName": "goldenPothos",
+        "lastWateredDate": "2026-08-31",
+        "wateringIntervalDays": 7
+    },
+    {
+        "id": "55555555-5555-5555-5555-555555555555",
+        "name": "Ruby",
+        "species": "Rubber Plant",
+        "imageName": "rubberPlant",
+        "lastWateredDate": "2026-08-30",
+        "wateringIntervalDays": 10
+    },
+    {
+        "id": "66666666-6666-6666-6666-666666666666",
+        "name": "Fern",
+        "species": "Boston Fern",
+        "imageName": "bostonFern",
+        "lastWateredDate": "2026-09-01",
+        "wateringIntervalDays": 4
+    },
+    {
+        "id": "77777777-7777-7777-7777-777777777777",
+        "name": "Spike",
+        "species": "Aloe Vera",
+        "imageName": "aloeVera",
+        "lastWateredDate": "2026-08-27",
+        "wateringIntervalDays": 14
+    },
+    {
+        "id": "88888888-8888-8888-8888-888888888888",
+        "name": "Figgy",
+        "species": "Fiddle Leaf Fig",
+        "imageName": "fiddleLeafFig",
+        "lastWateredDate": "2026-08-30",
+        "wateringIntervalDays": 7
     }
 ]
