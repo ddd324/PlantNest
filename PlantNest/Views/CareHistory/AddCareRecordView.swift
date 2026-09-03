@@ -8,11 +8,79 @@
 import SwiftUI
 
 struct AddCareRecordView: View {
+    
+    let plant: Plant
+
+    @EnvironmentObject private var careRepository: LocalCareRepository
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var selectedActivity: CareActivityType = .watering
+    @State private var selectedDate = Date()
+    @State private var message: String?
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Form {
+            Section("Plant") {
+                Text(plant.name)
+            }
+            
+            Section("Care Activity") {
+                Picker("Activity", selection: $selectedActivity) {
+                    ForEach(CareActivityType.allCases, id: \.self) { activity in
+                        Text(activity.rawValue)
+                            .tag(activity)
+                    }
+                }
+            }
+            
+            Section("Date") {
+                DatePicker("Date", selection: $selectedDate, in: ...Date(), displayedComponents: .date)
+            }
+            
+            Section {
+                Button("Save Care Record") {
+                    saveCareRecord()
+                }
+            }
+            
+            if let message {
+                Section {
+                    Text(message)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .navigationTitle("Add Care Record")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private func saveCareRecord() {
+        let useCase = RecordCareActivityUseCase(repository: careRepository)
+        
+        do {
+            _ = try useCase.execute(plant: plant, activityType: selectedActivity, date: selectedDate)
+            dismiss()
+        } catch RecordCareActivityUseCase.RecordCareActivityError.futureDate {
+            message = "The care data cannot be in the future."
+        } catch RecordCareActivityUseCase.RecordCareActivityError.duplicateRecord {
+            message = "\(selectedActivity.rawValue) has already been recorded for this date"
+        } catch {
+            message = "Unable to save care record."
+        }
     }
 }
 
 #Preview {
-    AddCareRecordView()
+    NavigationStack {
+        AddCareRecordView(
+            plant: Plant(
+                name: "Monty",
+                species: "Monstera deliciosa",
+                imageName: "monstera",
+                lastWateredDate: Date(),
+                wateringIntervalDays: 7
+            )
+        )
+    }
+    .environmentObject(LocalCareRepository())
 }

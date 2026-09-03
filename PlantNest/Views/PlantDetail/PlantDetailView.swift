@@ -37,6 +37,12 @@ struct PlantDetailView: View {
                 } label: {
                     Label("Care History", systemImage: "clock.arrow.circlepath")
                 }
+                
+                NavigationLink {
+                    AddCareRecordView(plant: plant)
+                } label: {
+                    Label("Add Care Record", systemImage: "plus.circle")
+                }
             }
         }
         .navigationTitle(plant.name)
