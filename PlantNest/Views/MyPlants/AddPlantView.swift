@@ -43,9 +43,11 @@ struct AddPlantView: View {
                 }
             }
             
-            Section("Enter Manually") {
-                Button("Enter plant information") {
-                    //
+            Section("Or Enter Manually") {
+                NavigationLink {
+                    ManualAddPlantView()
+                } label: {
+                    Label("Enter Plant Information", systemImage: "square.and.pencil")
                 }
             }
         }

@@ -23,11 +23,19 @@ struct MyPlantsView: View {
                             .scaledToFill()
                             .frame(width: 70, height: 70)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
-                    } else {
+                    } else if !plant.imageName.isEmpty {
                         Image(plant.imageName)
                             .resizable()
                             .scaledToFill()
                             .frame(width: 70, height: 70)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    } else {
+                        Image(systemName: "leaf.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .padding(18)
+                            .frame(width: 70, height: 70)
+                            .background(.quaternary)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
                     

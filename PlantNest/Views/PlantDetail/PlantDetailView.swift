@@ -20,12 +20,21 @@ struct PlantDetailView: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: 220)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
-                } else {
+                } else if !plant.imageName.isEmpty {
                     Image(plant.imageName)
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity)
                         .frame(height: 220)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                } else {
+                    Image(systemName: "leaf.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .padding(60)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 220)
+                        .background(.quaternary)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
             }
