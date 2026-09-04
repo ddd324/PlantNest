@@ -64,4 +64,21 @@ final class CareViewModel: ObservableObject {
             return nil
         }
     }
+    
+    func updatePlant(after record: CareRecord, originalPlant: Plant) -> Plant {
+        var updatedPlant = originalPlant
+        
+        switch record.activityType {
+        case .watering:
+            updatedPlant.lastWateredDate = record.date
+            
+        case .fertilising:
+            updatedPlant.lastFertilisedDate = record.date
+            
+        case .repotting:
+            break
+        }
+        
+        return updatedPlant
+    }
 }

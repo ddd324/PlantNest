@@ -12,6 +12,7 @@ struct AddCareRecordView: View {
     let plant: Plant
 
     @EnvironmentObject private var careRepository: LocalCareRepository
+    @EnvironmentObject private var plantViewModel: PlantViewModel
     @Environment(\.dismiss) private var dismiss
     
     @State private var selectedActivity: CareActivityType = .watering
@@ -58,7 +59,20 @@ struct AddCareRecordView: View {
         let useCase = RecordCareActivityUseCase(repository: careRepository)
         
         do {
-            _ = try useCase.execute(plant: plant, activityType: selectedActivity, date: selectedDate)
+            let record = try useCase.execute(plant: plant, activityType: selectedActivity, date: selectedDate)
+            
+            var updatedPlant = plant
+            
+            switch selectedActivity {
+            case .watering:
+                updatedPlant.lastWateredDate = record.date
+            case .fertilising:
+                updatedPlant.lastFertilisedDate = record.date
+            case .repotting:
+                break
+            }
+            
+            plantViewModel.updatePlant(updatedPlant)
             dismiss()
         } catch RecordCareActivityUseCase.RecordCareActivityError.futureDate {
             message = "The care data cannot be in the future."
@@ -76,11 +90,14 @@ struct AddCareRecordView: View {
             plant: Plant(
                 name: "Monty",
                 species: "Monstera deliciosa",
-                imageName: "monstera",
+                imageName: "",
                 lastWateredDate: Date(),
-                wateringIntervalDays: 7
+                wateringIntervalDays: 7,
+                lastFertilisedDate: Date(),
+                fertilisingIntervalDays: 28
             )
         )
     }
     .environmentObject(LocalCareRepository())
+    .environmentObject(PlantViewModel())
 }
