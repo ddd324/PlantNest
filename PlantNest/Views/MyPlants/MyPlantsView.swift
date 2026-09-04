@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct MyPlantsView: View {
-    @StateObject private var plantViewModel = PlantViewModel()
+    
+    @EnvironmentObject private var plantViewModel: PlantViewModel
     
     var body: some View {
         List(plantViewModel.plants) { plant in
@@ -16,11 +17,19 @@ struct MyPlantsView: View {
                 PlantDetailView(plant: plant)
             } label: {
                 HStack(spacing: 16) {
-                    Image(plant.imageName)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 70, height: 70)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    if let imageData = plant.imageData, let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 70, height: 70)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    } else {
+                        Image(plant.imageName)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 70, height: 70)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
                     
                     VStack(alignment: .leading, spacing: 4) {
                         Text(plant.name)
@@ -39,6 +48,15 @@ struct MyPlantsView: View {
             }
         }
         .navigationTitle("My Plants")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink {
+                    AddPlantView()
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
         .onAppear{
             plantViewModel.loadPlants()
         }
@@ -50,4 +68,6 @@ struct MyPlantsView: View {
     NavigationStack {
         MyPlantsView()
     }
+    .environmentObject(PlantViewModel())
+    .environmentObject(LocalCareRepository())
 }

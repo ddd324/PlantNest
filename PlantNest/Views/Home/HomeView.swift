@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @StateObject private var plantViewModel = PlantViewModel()
+    @EnvironmentObject private var plantViewModel: PlantViewModel
     @StateObject private var careViewModel = CareViewModel()
     
     var body: some View {
@@ -77,4 +77,6 @@ struct HomeView: View {
     NavigationStack{
         HomeView()
     }
+    .environmentObject(PlantViewModel())
+    .environmentObject(LocalCareRepository())
 }

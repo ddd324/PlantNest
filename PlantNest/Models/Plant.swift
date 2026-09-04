@@ -8,12 +8,14 @@
 import Foundation
 
 struct Plant: Identifiable, Codable {
+    
     let id: UUID
     var name: String
     var species: String
     var imageName: String
     var lastWateredDate: Date
     var wateringIntervalDays: Int
+    var imageData: Data?
     
     init(
         id: UUID = UUID(),
@@ -21,7 +23,8 @@ struct Plant: Identifiable, Codable {
         species: String,
         imageName: String,
         lastWateredDate: Date,
-        wateringIntervalDays: Int
+        wateringIntervalDays: Int,
+        imageData: Data? = nil
     ) {
         self.id = id
         self.name = name
@@ -29,5 +32,6 @@ struct Plant: Identifiable, Codable {
         self.imageName = imageName
         self.lastWateredDate = lastWateredDate
         self.wateringIntervalDays = wateringIntervalDays
+        self.imageData = imageData
     }
 }

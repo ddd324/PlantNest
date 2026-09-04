@@ -18,10 +18,18 @@ final class PlantViewModel: ObservableObject {
     }
     
     func loadPlants() {
+        guard plants.isEmpty else {
+            return
+        }
+        
         do {
             plants = try repository.fetchPlants()
         } catch {
             print("Failed to load plants: \(error)")
         }
+    }
+    
+    func addPlant(_ plant: Plant) {
+        plants.append(plant)
     }
 }
