@@ -11,46 +11,64 @@ struct GenerateCarePlanUseCase {
     
     enum GenerateCarePlanError: Error {
         case invalidWateringInterval
+        case invalidFertilisingnterval
     }
     
-    struct UpcomingCareItem: Identifiable {
+    struct CareItem: Identifiable {
+        let id = UUID()
         let plant: Plant
+        let activityType: CareActivityType
         let daysRemaining: Int
-        var id: UUID {
-            plant.id
-        }
     }
     
     struct CarePlan {
-        let dueToday: [Plant]
-        let upcoming: [UpcomingCareItem]
+        let dueToday: [CareItem]
+        let upcoming: [CareItem]
     }
     
     func execute(plants: [Plant], currentDate: Date = Date()) throws -> CarePlan {
         
-        var dueToday: [Plant] = []
-        var upcoming: [UpcomingCareItem] = []
+        var dueToday: [CareItem] = []
+        var upcoming: [CareItem] = []
         
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: currentDate)
         
         for plant in plants {
+            // Watering
             guard plant.wateringIntervalDays > 0 else {
                 throw GenerateCarePlanError.invalidWateringInterval
             }
             
-            guard let nextWateringDate = calendar.date(byAdding: .day, value: plant.wateringIntervalDays, to: plant.lastWateredDate) else {
-                continue
+            if let nextWateringDate = calendar.date(byAdding: .day, value: plant.wateringIntervalDays, to: plant.lastWateredDate) {
+                let wateringDay = calendar.startOfDay(for: nextWateringDate)
+                let daysRemaining = calendar.dateComponents([.day], from: today, to: wateringDay).day ?? 0
+                let item = CareItem(plant: plant, activityType: .watering, daysRemaining: daysRemaining)
+                
+                if daysRemaining <= 0 {
+                    dueToday.append(item)
+                } else {
+                    upcoming.append(item)
+                }
             }
             
-            let nextWateringDay = calendar.startOfDay(for: nextWateringDate)
-            
-            let daysRemaining = calendar.dateComponents([.day], from: today, to: nextWateringDay).day ?? 0
-            
-            if daysRemaining <= 0 {
-                dueToday.append(plant)
-            } else {
-                upcoming.append(UpcomingCareItem(plant: plant, daysRemaining: daysRemaining))
+            //Fertilising
+            if let lastFertilisedDate = plant.lastFertilisedDate, let fertilisingIntervalDays = plant.fertilisingIntervalDays {
+                guard fertilisingIntervalDays > 0 else {
+                    throw GenerateCarePlanError.invalidFertilisingnterval
+                }
+                
+                if let nextFertilisingDate = calendar.date(byAdding: .day, value: fertilisingIntervalDays, to: lastFertilisedDate) {
+                    let fertilisingDay = calendar.startOfDay(for: nextFertilisingDate)
+                    let daysRemaining = calendar.dateComponents([.day], from: today, to: fertilisingDay).day ?? 0
+                    let item = CareItem(plant: plant, activityType: .fertilising, daysRemaining: daysRemaining)
+                    
+                    if daysRemaining <= 0 {
+                        dueToday.append(item)
+                    } else {
+                        upcoming.append(item)
+                    }
+                }
             }
         }
         

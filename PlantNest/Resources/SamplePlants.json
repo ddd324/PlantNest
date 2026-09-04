@@ -5,7 +5,9 @@
         "species": "Monstera deliciosa",
         "imageName": "monstera",
         "lastWateredDate": "2026-08-25",
-        "wateringIntervalDays": 7
+        "wateringIntervalDays": 7,
+        "lastFertilisedDate": "2026-08-10",
+        "fertilisingIntervalDays": 28
     },
     {
         "id": "22222222-2222-2222-2222-222222222222",
@@ -21,7 +23,9 @@
         "species": "Peace Lily",
         "imageName": "peaceLily",
         "lastWateredDate": "2026-08-29",
-        "wateringIntervalDays": 5
+        "wateringIntervalDays": 5,
+        "lastFertilisedDate": "2026-08-05",
+        "fertilisingIntervalDays": 28
     },
     {
         "id": "44444444-4444-4444-4444-444444444444",

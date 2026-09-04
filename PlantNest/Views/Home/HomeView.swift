@@ -19,15 +19,19 @@ struct HomeView: View {
                     Text("No watering tasks today")
                         .foregroundStyle(.secondary)
                 } else {
-                    ForEach(careViewModel.dueToday) { plant in
+                    ForEach(careViewModel.dueToday) { item in
                         NavigationLink {
-                            WateringCheckView(plant: plant)
+                            if item.activityType == .watering {
+                                WateringCheckView(plant: item.plant)
+                            } else {
+                                PlantDetailView(plant: item.plant)
+                            }
                         } label: {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(plant.name)
+                                Text(item.plant.name)
                                     .font(.headline)
                                 
-                                Text("Watering check due")
+                                Text("\(item.activityType.rawValue) due")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             }
@@ -50,11 +54,11 @@ struct HomeView: View {
                                     .font(.headline)
                                 
                                 if item.daysRemaining == 1 {
-                                    Text("Water tomorrow")
+                                    Text("\(item.activityType.rawValue) tomorrow")
                                         .font(.subheadline)
                                         .foregroundStyle(.secondary)
                                 } else {
-                                    Text("Water in \(item.daysRemaining) days")
+                                    Text("\(item.activityType.rawValue) in \(item.daysRemaining) days")
                                         .font(.subheadline)
                                         .foregroundStyle(.secondary)
                                 }
@@ -67,8 +71,11 @@ struct HomeView: View {
         .navigationTitle("Home")
         .onAppear {
             plantViewModel.loadPlants()
-            
             careViewModel.generateCarePlan(for: plantViewModel.plants)
+        }
+        .onChange(of: plantViewModel.plants) { _, newPlants in
+            careViewModel.generateCarePlan(for: newPlants)
+            
         }
     }
 }

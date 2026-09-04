@@ -10,6 +10,28 @@ import SwiftUI
 struct PlantDetailView: View {
     let plant: Plant
     
+    private var nextWateringDate: Date? {
+        Calendar.current.date(
+            byAdding: .day,
+            value: plant.wateringIntervalDays,
+            to: plant.lastWateredDate
+        )
+    }
+    
+    private var nextFertilisingDate: Date? {
+        guard let lastFertilisedDate = plant.lastFertilisedDate,
+              let fertilisingIntervalDays = plant.fertilisingIntervalDays
+        else {
+            return nil
+        }
+
+        return Calendar.current.date(
+            byAdding: .day,
+            value: fertilisingIntervalDays,
+            to: lastFertilisedDate
+        )
+    }
+    
     var body: some View {
         List {
             Section {
@@ -45,8 +67,37 @@ struct PlantDetailView: View {
             }
             
             Section("Care") {
-                LabeledContent("Watering interval", value: "\(plant.wateringIntervalDays) days")
+                LabeledContent("Watering", value: "Every \(plant.wateringIntervalDays) days")
+                
                 LabeledContent("Last watered", value: plant.lastWateredDate.formatted(date: .abbreviated, time: .omitted))
+                
+                if let nextWateringDate {
+                    LabeledContent(
+                        "Next watering check",
+                        value: nextWateringDate.formatted(
+                            date: .abbreviated,
+                            time: .omitted
+                        )
+                    )
+                }
+                
+                if let fertilisingIntervalDays = plant.fertilisingIntervalDays {
+                    LabeledContent("Fertilising", value: "Every \(fertilisingIntervalDays) days")
+                }
+                
+                if let lastFertilisedDate = plant.lastFertilisedDate {
+                    LabeledContent("Last fertilised", value: lastFertilisedDate.formatted(date: .abbreviated, time: .omitted))
+                }
+                
+                if let nextFertilisingDate {
+                    LabeledContent(
+                        "Next fertilising",
+                        value: nextFertilisingDate.formatted(
+                            date: .abbreviated,
+                            time: .omitted
+                        )
+                    )
+                }
             }
             
             Section("History") {

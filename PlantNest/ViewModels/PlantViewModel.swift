@@ -32,4 +32,12 @@ final class PlantViewModel: ObservableObject {
     func addPlant(_ plant: Plant) {
         plants.append(plant)
     }
+    
+    func updatePlant(_ updatedPlant: Plant) {
+        guard let index = plants.firstIndex(where: { $0.id == updatedPlant.id }) else {
+            return
+        }
+        
+        plants[index] = updatedPlant
+    }
 }

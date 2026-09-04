@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Plant: Identifiable, Codable {
+struct Plant: Identifiable, Codable, Equatable {
     
     let id: UUID
     var name: String
@@ -16,6 +16,8 @@ struct Plant: Identifiable, Codable {
     var lastWateredDate: Date
     var wateringIntervalDays: Int
     var imageData: Data?
+    var lastFertilisedDate: Date?
+    var fertilisingIntervalDays: Int?
     
     init(
         id: UUID = UUID(),
@@ -24,7 +26,9 @@ struct Plant: Identifiable, Codable {
         imageName: String,
         lastWateredDate: Date,
         wateringIntervalDays: Int,
-        imageData: Data? = nil
+        imageData: Data? = nil,
+        lastFertilisedDate: Date? = nil,
+        fertilisingIntervalDays: Int? = nil
     ) {
         self.id = id
         self.name = name
@@ -33,5 +37,7 @@ struct Plant: Identifiable, Codable {
         self.lastWateredDate = lastWateredDate
         self.wateringIntervalDays = wateringIntervalDays
         self.imageData = imageData
+        self.lastFertilisedDate = lastFertilisedDate
+        self.fertilisingIntervalDays = fertilisingIntervalDays
     }
 }

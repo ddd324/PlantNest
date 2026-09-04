@@ -12,6 +12,7 @@ struct WateringCheckView: View {
     let plant: Plant
     
     @EnvironmentObject private var careRepository: LocalCareRepository
+    @EnvironmentObject private var plantViewModel: PlantViewModel
     @StateObject private var viewModel = CareViewModel()
     
     var body: some View {
@@ -46,7 +47,9 @@ struct WateringCheckView: View {
                     
                     if recommendation.shouldWater {
                         Button("Record Watering") {
-                            viewModel.recordwatering(for: plant, repository: careRepository)
+                            if let updatedPlant = viewModel.recordwatering(for: plant, repository: careRepository) {
+                                plantViewModel.updatePlant(updatedPlant)
+                            }
                         }
                     }
                 }
@@ -71,10 +74,12 @@ struct WateringCheckView: View {
             plant: Plant(
                 name: "Monty",
                 species: "Monstera deliciosa",
-                imageName: "monstera",
+                imageName: "",
                 lastWateredDate: Date(),
                 wateringIntervalDays: 7
             )
         )
     }
+    .environmentObject(LocalCareRepository())
+    .environmentObject(PlantViewModel())
 }
