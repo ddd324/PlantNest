@@ -10,6 +10,8 @@ import PhotosUI
 
 struct AddPlantView: View {
     
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     
@@ -35,7 +37,9 @@ struct AddPlantView: View {
                 Section {
                     NavigationLink {
                         if let selectedImageData {
-                            IdentificationResultsView(selectedImageData: selectedImageData)
+                            IdentificationResultsView(selectedImageData: selectedImageData, onPlantAdded: {
+                                dismiss()
+                            })
                         }
                     } label: {
                         Label("Identify Plant", systemImage: "sparkles")
@@ -45,7 +49,9 @@ struct AddPlantView: View {
             
             Section("Or Enter Manually") {
                 NavigationLink {
-                    ManualAddPlantView()
+                    ManualAddPlantView(onPlantAdded: {
+                        dismiss()
+                    })
                 } label: {
                     Label("Enter Plant Information", systemImage: "square.and.pencil")
                 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct IdentificationResultsView: View {
     
     let selectedImageData: Data
+    let onPlantAdded: () -> Void
     
     @StateObject private var identificationViewModel = IdentificationViewModel()
     @EnvironmentObject private var plantViewModel: PlantViewModel
@@ -77,6 +78,7 @@ struct IdentificationResultsView: View {
                     if let confirmedPlant = identificationViewModel.confirmedPlant {
                         plantViewModel.addPlant(confirmedPlant)
                         dismiss()
+                        onPlantAdded()
                     }
                 }
             }
@@ -88,7 +90,7 @@ struct IdentificationResultsView: View {
 
 #Preview {
     NavigationStack {
-        IdentificationResultsView(selectedImageData: Data())
+        IdentificationResultsView(selectedImageData: Data(), onPlantAdded: {})
     }
     .environmentObject(PlantViewModel())
 }

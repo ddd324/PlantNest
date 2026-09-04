@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ManualAddPlantView: View {
     
+    let onPlantAdded: () -> Void
+    
     @EnvironmentObject private var plantViewModel: PlantViewModel
     @Environment(\.dismiss) private var dismiss
     
@@ -60,12 +62,13 @@ struct ManualAddPlantView: View {
         
         plantViewModel.addPlant(plant)
         dismiss()
+        onPlantAdded()
     }
 }
 
 #Preview {
     NavigationStack {
-        ManualAddPlantView()
+        ManualAddPlantView(onPlantAdded: {})
     }
     .environmentObject(PlantViewModel())
 }
