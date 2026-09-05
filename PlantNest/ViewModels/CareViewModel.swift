@@ -77,6 +77,9 @@ final class CareViewModel: ObservableObject {
             
         case .repotting:
             break
+            
+        case .pruning:
+            break
         }
         
         return updatedPlant

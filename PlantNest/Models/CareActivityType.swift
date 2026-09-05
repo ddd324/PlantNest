@@ -11,4 +11,5 @@ enum CareActivityType: String, Codable, CaseIterable, Equatable {
     case watering = "Watering"
     case fertilising = "Fertilising"
     case repotting = "Repotting"
+    case pruning = "Pruning"
 }

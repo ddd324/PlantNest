@@ -70,6 +70,8 @@ struct AddCareRecordView: View {
                 updatedPlant.lastFertilisedDate = record.date
             case .repotting:
                 break
+            case .pruning:
+                break
             }
             
             plantViewModel.updatePlant(updatedPlant)
