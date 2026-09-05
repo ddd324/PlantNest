@@ -23,6 +23,8 @@ struct HomeView: View {
                         NavigationLink {
                             if item.activityType == .watering {
                                 WateringCheckView(plant: item.plant)
+                            } else if item.activityType == .fertilising {
+                                AddCareRecordView(plant: item.plant, initialActivity: .fertilising)
                             } else {
                                 PlantDetailView(plant: item.plant)
                             }

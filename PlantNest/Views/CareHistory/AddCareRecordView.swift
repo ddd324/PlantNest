@@ -15,9 +15,14 @@ struct AddCareRecordView: View {
     @EnvironmentObject private var plantViewModel: PlantViewModel
     @Environment(\.dismiss) private var dismiss
     
-    @State private var selectedActivity: CareActivityType = .watering
+    @State private var selectedActivity: CareActivityType
     @State private var selectedDate = Date()
     @State private var message: String?
+    
+    init(plant: Plant, initialActivity: CareActivityType = .watering) {
+        self.plant = plant
+        _selectedActivity = State(initialValue: initialActivity)
+    }
     
     var body: some View {
         Form {

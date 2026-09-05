@@ -100,6 +100,19 @@ struct PlantDetailView: View {
                 }
             }
             
+            Section("Plant Health") {
+                NavigationLink {
+                    PlantHealthQuestionsView(
+                        plant: plant
+                    )
+                } label: {
+                    Label(
+                        "Check Plant Health",
+                        systemImage: "heart.text.square"
+                    )
+                }
+            }
+            
             Section("History") {
                 NavigationLink {
                     CareHistoryView(plant: plant)
