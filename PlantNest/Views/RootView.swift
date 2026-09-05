@@ -25,6 +25,11 @@ struct RootView: View {
                     MyPlantsView()
                 }
             }
+            Tab("Plant Health", systemImage: "heart.text.clipboard.fill") {
+                NavigationStack {
+                    PlantHealthView()
+                }
+            }
         }
         .environmentObject(careRepository)
         .environmentObject(plantViewModel)
