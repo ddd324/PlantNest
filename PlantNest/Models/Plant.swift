@@ -18,10 +18,6 @@ struct Plant: Identifiable, Codable, Equatable {
     var imageData: Data?
     var lastFertilisedDate: Date?
     var fertilisingIntervalDays: Int?
-    var waterGuidance: String?
-    var lightGuidance: String?
-    var fertilisingGuidance: String?
-    var repottingGuidance: String?
     
     init(
         id: UUID = UUID(),
@@ -32,11 +28,7 @@ struct Plant: Identifiable, Codable, Equatable {
         wateringIntervalDays: Int,
         imageData: Data? = nil,
         lastFertilisedDate: Date? = nil,
-        fertilisingIntervalDays: Int? = nil,
-        waterGuidance: String? = nil,
-        lightGuidance: String? = nil,
-        fertilisingGuidance: String? = nil,
-        repottingGuidance: String? = nil
+        fertilisingIntervalDays: Int? = nil
     ) {
         self.id = id
         self.name = name
@@ -47,9 +39,5 @@ struct Plant: Identifiable, Codable, Equatable {
         self.imageData = imageData
         self.lastFertilisedDate = lastFertilisedDate
         self.fertilisingIntervalDays = fertilisingIntervalDays
-        self.waterGuidance = waterGuidance
-        self.lightGuidance = lightGuidance
-        self.fertilisingGuidance = fertilisingGuidance
-        self.repottingGuidance = repottingGuidance
     }
 }
