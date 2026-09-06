@@ -10,8 +10,10 @@ import SwiftUI
 struct ManualAddPlantView: View {
     
     let onPlantAdded: () -> Void
+    let selectedImageData: Data?
     
     @EnvironmentObject private var plantViewModel: PlantViewModel
+    @EnvironmentObject private var careRepository: LocalCareRepository
     @Environment(\.dismiss) private var dismiss
     
     @State private var plantName = ""
@@ -21,6 +23,16 @@ struct ManualAddPlantView: View {
     
     var body: some View {
         Form {
+            if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
+                Section("Plant Photo") {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 220)
+                        .frame(maxWidth: .infinity)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+            }
             Section("Plant Information") {
                 TextField("Plant name", text: $plantName)
                 TextField("Species", text: $species)
@@ -48,6 +60,7 @@ struct ManualAddPlantView: View {
     }
     
     private func addPlant() {
+        let carePlan = careRepository.fetchCarePlan(for: species)
         guard !plantName.isEmpty else {
             errorMessage = "Please enter a plant name."
             return
@@ -58,7 +71,7 @@ struct ManualAddPlantView: View {
             return
         }
         
-        let plant = Plant(name: plantName, species: species, imageName: "", lastWateredDate: Date(), wateringIntervalDays: wateringIntervalDays, imageData: nil)
+        let plant = Plant(name: plantName, species: species, imageName: "", lastWateredDate: Date(), wateringIntervalDays: wateringIntervalDays, imageData: selectedImageData, lastFertilisedDate: nil, fertilisingIntervalDays: carePlan?.fertilisingIntervalDays)
         
         plantViewModel.addPlant(plant)
         dismiss()
@@ -68,7 +81,8 @@ struct ManualAddPlantView: View {
 
 #Preview {
     NavigationStack {
-        ManualAddPlantView(onPlantAdded: {})
+        ManualAddPlantView(onPlantAdded: {}, selectedImageData: nil)
     }
     .environmentObject(PlantViewModel())
+    .environmentObject(LocalCareRepository())
 }

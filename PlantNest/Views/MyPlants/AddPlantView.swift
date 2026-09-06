@@ -51,7 +51,7 @@ struct AddPlantView: View {
                 NavigationLink {
                     ManualAddPlantView(onPlantAdded: {
                         dismiss()
-                    })
+                    }, selectedImageData: selectedImageData)
                 } label: {
                     Label("Enter Plant Information", systemImage: "square.and.pencil")
                 }

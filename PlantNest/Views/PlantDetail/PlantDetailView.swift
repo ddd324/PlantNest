@@ -6,13 +6,21 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct PlantDetailView: View {
     
-    let plant: Plant
+    @State private var plant: Plant
     
     @EnvironmentObject private var careRepository: LocalCareRepository
     @StateObject private var plantDetailViewModel = PlantDetailViewModel()
+    @EnvironmentObject private var plantViewModel: PlantViewModel
+    
+    @State private var selectedPhoto: PhotosPickerItem?
+    
+    init(plant: Plant) {
+        self.plant = plant
+    }
     
     private var nextWateringDate: Date? {
         Calendar.current.date(
@@ -40,28 +48,47 @@ struct PlantDetailView: View {
         List {
             Section {
                 if let imageData = plant.imageData, let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 220)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                    VStack(spacing: 12) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 220)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                        
+                        PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                            Label("Change Photo", systemImage: "photo")
+                        }
+                    }
                 } else if !plant.imageName.isEmpty {
-                    Image(plant.imageName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 220)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                    VStack(spacing: 12) {
+                        Image(plant.imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 220)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                        
+                        PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                            Label("Change Photo", systemImage: "photo")
+                        }
+                    }
                 } else {
-                    Image(systemName: "leaf.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .padding(60)
+                    PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                        VStack(spacing: 12) {
+                            Image(systemName: "leaf.fill")
+                                .font(.system(size: 55))
+                            
+                            Label("Add Photo", systemImage: "photo.badge.plus")
+                                .font(.headline)
+                        }
+                        .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity)
                         .frame(height: 220)
                         .background(.quaternary)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             
@@ -138,6 +165,18 @@ struct PlantDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             plantDetailViewModel.loadCarePlan(for: plant.species, repository: careRepository)
+        }
+        .onChange(of: selectedPhoto) { _, newPhoto in
+            Task {
+                guard let imageData = try? await newPhoto?.loadTransferable(type: Data.self) else {
+                    return
+                }
+                
+                var updatedPlant = plant
+                updatedPlant.imageData = imageData
+                plant = updatedPlant
+                plantViewModel.updatePlant(updatedPlant)
+            }
         }
     }
 }
