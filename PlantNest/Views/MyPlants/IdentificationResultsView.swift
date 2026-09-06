@@ -14,6 +14,7 @@ struct IdentificationResultsView: View {
     
     @StateObject private var identificationViewModel = IdentificationViewModel()
     @EnvironmentObject private var plantViewModel: PlantViewModel
+    @EnvironmentObject private var careRepository: LocalCareRepository
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -73,7 +74,7 @@ struct IdentificationResultsView: View {
             
             Section {
                 Button("Confirm Plant") {
-                    identificationViewModel.confirmSelection(imageData: selectedImageData)
+                    identificationViewModel.confirmSelection(imageData: selectedImageData, careRepository: careRepository)
                     
                     if let confirmedPlant = identificationViewModel.confirmedPlant {
                         plantViewModel.addPlant(confirmedPlant)
@@ -93,4 +94,5 @@ struct IdentificationResultsView: View {
         IdentificationResultsView(selectedImageData: Data(), onPlantAdded: {})
     }
     .environmentObject(PlantViewModel())
+    .environmentObject(LocalCareRepository())
 }

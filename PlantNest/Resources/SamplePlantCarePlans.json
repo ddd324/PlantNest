@@ -1,0 +1,42 @@
+[
+    {
+        "species": "Monstera deliciosa",
+        "genus": "Monstera",
+        "wateringIntervalDays": 7,
+        "fertilisingIntervalDays": 28,
+        "waterGuidance": "Allow the top soil to dry slightly before watering.",
+        "lightGuidance": "Bright indirect light.",
+        "fertilisingGuidance": "Fertilise regularly during active growth.",
+        "repottingGuidance": "Repot when the plant outgrows its pot."
+    },
+    {
+        "species": "Philodendron",
+        "genus": "Philodendron",
+        "wateringIntervalDays": 7,
+        "fertilisingIntervalDays": 28,
+        "waterGuidance": "Allow the top soil to dry slightly before watering.",
+        "lightGuidance": "Bright indirect light.",
+        "fertilisingGuidance": "Fertilise during active growth.",
+        "repottingGuidance": "Repot when roots become crowded."
+    },
+    {
+        "species": "Rhaphidophora tetrasperma",
+        "genus": "Rhaphidophora",
+        "wateringIntervalDays": 7,
+        "fertilisingIntervalDays": 28,
+        "waterGuidance": "Allow the top soil to dry slightly before watering.",
+        "lightGuidance": "Bright indirect light.",
+        "fertilisingGuidance": "Fertilise regularly during active growth.",
+        "repottingGuidance": "Repot when roots become crowded."
+    },
+    {
+        "species": "Snake Plant",
+        "genus": "Snake Plant",
+        "wateringIntervalDays": 7,
+        "fertilisingIntervalDays": 28,
+        "waterGuidance": "Allow the top soil to dry slightly before watering.",
+        "lightGuidance": "Bright indirect light.",
+        "fertilisingGuidance": "Fertilise regularly during active growth.",
+        "repottingGuidance": "Repot when roots become crowded."
+    }
+]

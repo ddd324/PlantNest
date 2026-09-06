@@ -15,12 +15,10 @@ final class IdentificationViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var plantName: String = ""
     
-    private let confirmUseCase = ConfirmPlantIdentificationUseCase()
-    
     let candidates: [PlantIdentificationCandidate] = [
-        PlantIdentificationCandidate(species: "Monstera deliciosa", confidence: 82, wateringIntervalDays: 7),
-        PlantIdentificationCandidate(species: "Philodendron", confidence: 12, wateringIntervalDays: 7),
-        PlantIdentificationCandidate(species: "Rhaphidophora tetrasperma", confidence: 6, wateringIntervalDays: 7)
+        PlantIdentificationCandidate(species: "Monstera deliciosa", confidence: 82),
+        PlantIdentificationCandidate(species: "Philodendron", confidence: 12),
+        PlantIdentificationCandidate(species: "Rhaphidophora tetrasperma", confidence: 6)
     ]
     
     func selectCandidate(_ candidate: PlantIdentificationCandidate) {
@@ -28,9 +26,12 @@ final class IdentificationViewModel: ObservableObject {
         errorMessage = nil
     }
     
-    func confirmSelection(imageData: Data) {
+    func confirmSelection(imageData: Data, careRepository: CareRepository) {
+        let confirmUseCase = ConfirmPlantIdentificationUseCase(careRepository: careRepository)
+        
         do {
             confirmedPlant = try confirmUseCase.execute(candidate: selectedCandidate, name: plantName, imageData: imageData)
+            errorMessage = nil
         } catch ConfirmPlantIdentificationUseCase.ConfirmPlantIdentificationError.noCandidateSelected {
             errorMessage = "Please select a plant before continuing."
         } catch {

@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct PlantDetailView: View {
+    
     let plant: Plant
+    
+    @EnvironmentObject private var careRepository: LocalCareRepository
+    @StateObject private var plantDetailViewModel = PlantDetailViewModel()
     
     private var nextWateringDate: Date? {
         Calendar.current.date(
@@ -66,11 +70,18 @@ struct PlantDetailView: View {
                 LabeledContent("Species", value: plant.species)
             }
             
-            Section("Care") {
+            if let carePlan = plantDetailViewModel.carePlan {
+                Section("Care Plan") {
+                    LabeledContent("Water", value: carePlan.waterGuidance)
+                    LabeledContent("Light", value: carePlan.lightGuidance)
+                    LabeledContent("Fertilising", value: carePlan.fertilisingGuidance)
+                    LabeledContent("Repotting", value: carePlan.repottingGuidance)
+                }
+            }
+            
+            Section("Care Schedule") {
                 LabeledContent("Watering", value: "Every \(plant.wateringIntervalDays) days")
-                
-                LabeledContent("Last watered", value: plant.lastWateredDate.formatted(date: .abbreviated, time: .omitted))
-                
+                                
                 if let nextWateringDate {
                     LabeledContent(
                         "Next watering check",
@@ -83,10 +94,6 @@ struct PlantDetailView: View {
                 
                 if let fertilisingIntervalDays = plant.fertilisingIntervalDays {
                     LabeledContent("Fertilising", value: "Every \(fertilisingIntervalDays) days")
-                }
-                
-                if let lastFertilisedDate = plant.lastFertilisedDate {
-                    LabeledContent("Last fertilised", value: lastFertilisedDate.formatted(date: .abbreviated, time: .omitted))
                 }
                 
                 if let nextFertilisingDate {
@@ -129,6 +136,9 @@ struct PlantDetailView: View {
         }
         .navigationTitle(plant.name)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            plantDetailViewModel.loadCarePlan(for: plant.species, repository: careRepository)
+        }
     }
 }
 

@@ -11,4 +11,6 @@ protocol CareRepository {
     func fetchCareRecords (for plantID: UUID) throws -> [CareRecord]
     
     func addCareRecord(_ record: CareRecord) throws
+    
+    func fetchCarePlan(for species: String) -> PlantCarePlan?
 }

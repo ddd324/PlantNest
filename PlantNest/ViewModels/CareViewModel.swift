@@ -13,15 +13,15 @@ final class CareViewModel: ObservableObject {
     @Published var selectedSoilCondition: SoilCondition?
     @Published var recommendation: AssessWateringNeedUseCase.WateringRecommendation?
     
-    @Published var dueToday: [GenerateCarePlanUseCase.CareItem] = []
-    @Published var upcoming: [GenerateCarePlanUseCase.CareItem] = []
+    @Published var dueToday: [GenerateCareScheduleUseCase.CareItem] = []
+    @Published var upcoming: [GenerateCareScheduleUseCase.CareItem] = []
     
     @Published var recordMessage: String?
     
     private let assessWateringNeedUseCase: AssessWateringNeedUseCase
-    private let generateCarePlanUseCase: GenerateCarePlanUseCase
+    private let generateCarePlanUseCase: GenerateCareScheduleUseCase
     
-    init(assessWateringNeedUseCase: AssessWateringNeedUseCase = AssessWateringNeedUseCase(), generateCarePlanUseCase: GenerateCarePlanUseCase = GenerateCarePlanUseCase()) {
+    init(assessWateringNeedUseCase: AssessWateringNeedUseCase = AssessWateringNeedUseCase(), generateCarePlanUseCase: GenerateCareScheduleUseCase = GenerateCareScheduleUseCase()) {
         self.assessWateringNeedUseCase = assessWateringNeedUseCase
         self.generateCarePlanUseCase = generateCarePlanUseCase
     }

@@ -7,7 +7,11 @@
         "lastWateredDate": "2026-08-25",
         "wateringIntervalDays": 7,
         "lastFertilisedDate": "2026-08-10",
-        "fertilisingIntervalDays": 28
+        "fertilisingIntervalDays": 28,
+        "waterGuidance": "Allow the top soil to dry slightly before watering.",
+        "lightGuidance": "Bright indirect light.",
+        "fertilisingGuidance": "Fertilise regularly during active growth.",
+        "repottingGuidance": "Repot when the plant outgrows its pot."
     },
     {
         "id": "22222222-2222-2222-2222-222222222222",
@@ -15,7 +19,11 @@
         "species": "Snake Plant",
         "imageName": "snakePlant",
         "lastWateredDate": "2026-08-28",
-        "wateringIntervalDays": 14
+        "wateringIntervalDays": 14,
+        "waterGuidance": "Allow the soil to dry well between waterings.",
+        "lightGuidance": "Tolerates low light but prefers bright indirect light.",
+        "fertilisingGuidance": "Fertilise lightly during active growth.",
+        "repottingGuidance": "Repot when roots become crowded."
     },
     {
         "id": "33333333-3333-3333-3333-333333333333",

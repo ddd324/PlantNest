@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GenerateCarePlanUseCase {
+struct GenerateCareScheduleUseCase {
     
     enum GenerateCarePlanError: Error {
         case invalidWateringInterval

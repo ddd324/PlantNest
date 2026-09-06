@@ -10,5 +10,4 @@ import Foundation
 struct PlantIdentificationCandidate {
     let species: String
     let confidence: Int
-    let wateringIntervalDays: Int
 }
