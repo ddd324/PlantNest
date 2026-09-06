@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ManualAddPlantView: View {
     
     let onPlantAdded: () -> Void
-    let selectedImageData: Data?
     
     @EnvironmentObject private var plantViewModel: PlantViewModel
     @EnvironmentObject private var careRepository: LocalCareRepository
@@ -20,17 +20,40 @@ struct ManualAddPlantView: View {
     @State private var species = ""
     @State private var wateringIntervalDays = 7
     @State private var errorMessage: String?
+    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var selectedImageData: Data?
     
     var body: some View {
         Form {
-            if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
-                Section("Plant Photo") {
+            Section("Plant Photo") {
+                if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFit()
                         .frame(maxHeight: 220)
                         .frame(maxWidth: .infinity)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                    
+                    PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                        Label("Change Photo", systemImage: "photo")
+                    }
+                } else {
+                    PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                        VStack(spacing: 12) {
+                            Image(systemName: "photo")
+                                .font(.system(size: 40))
+                            
+                            Text("Add Photo")
+                                .font(.headline)
+                            
+                            Text("Optional")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 150)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             Section("Plant Information") {
@@ -57,10 +80,15 @@ struct ManualAddPlantView: View {
         }
         .navigationTitle("Enter Plant Manually")
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: selectedPhoto) { _, newPhoto in
+            Task {
+                selectedImageData = try? await newPhoto?.loadTransferable(type: Data.self)
+            }
+        }
     }
     
     private func addPlant() {
-        let carePlan = careRepository.fetchCarePlan(for: species)
+        
         guard !plantName.isEmpty else {
             errorMessage = "Please enter a plant name."
             return
@@ -70,6 +98,8 @@ struct ManualAddPlantView: View {
             errorMessage = "Please enter a species."
             return
         }
+        
+        let carePlan = careRepository.fetchCarePlan(for: species)
         
         let plant = Plant(name: plantName, species: species, imageName: "", lastWateredDate: Date(), wateringIntervalDays: wateringIntervalDays, imageData: selectedImageData, lastFertilisedDate: nil, fertilisingIntervalDays: carePlan?.fertilisingIntervalDays)
         
@@ -81,7 +111,7 @@ struct ManualAddPlantView: View {
 
 #Preview {
     NavigationStack {
-        ManualAddPlantView(onPlantAdded: {}, selectedImageData: nil)
+        ManualAddPlantView(onPlantAdded: {})
     }
     .environmentObject(PlantViewModel())
     .environmentObject(LocalCareRepository())

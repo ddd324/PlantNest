@@ -6,64 +6,54 @@
 //
 
 import SwiftUI
-import PhotosUI
 
 struct AddPlantView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @State private var selectedPhoto: PhotosPickerItem?
-    @State private var selectedImageData: Data?
-    
     var body: some View {
         Form {
-            Section("Plant Photo") {
-                if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 250)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                } else {
-                    ContentUnavailableView("No Photo Selected", systemImage: "photo",description: Text("Choose a photo of your plant."))
+            Section {
+                Text("How would you like to add your plant?")
+                    .font(.headline)
+                
+                Text("You can identify a plant from a photo or enter the details yourself.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            
+            Section("Add Method") {
+                NavigationLink {
+                    IdentifyPlantView()
+                } label: {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Label("Identify from Photo", systemImage: "camera.viewfinder")
+                            .font(.headline)
+                        
+                        Text("Choose a photo and view possible plant matches.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 4)
                 }
                 
-                PhotosPicker(selection: $selectedPhoto, matching: .images) {
-                    Label("Select Photo", systemImage: "photo.on.rectangle")
-                }
-            }
-            
-            if selectedImageData != nil {
-                Section {
-                    NavigationLink {
-                        if let selectedImageData {
-                            IdentificationResultsView(selectedImageData: selectedImageData, onPlantAdded: {
-                                dismiss()
-                            })
-                        }
-                    } label: {
-                        Label("Identify Plant", systemImage: "sparkles")
-                    }
-                }
-            }
-            
-            Section("Or Enter Manually") {
                 NavigationLink {
-                    ManualAddPlantView(onPlantAdded: {
-                        dismiss()
-                    }, selectedImageData: selectedImageData)
+                    ManualAddPlantView(onPlantAdded: {})
                 } label: {
-                    Label("Enter Plant Information", systemImage: "square.and.pencil")
+                    VStack(alignment: .leading, spacing: 6) {
+                        Label("Add Manually", systemImage: "square.and.pencil")
+                            .font(.headline)
+                        
+                        Text("Enter the plant details yourself.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 4)
                 }
             }
         }
         .navigationTitle("Add Plant")
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: selectedPhoto) {
-            Task {
-                selectedImageData = try? await selectedPhoto?.loadTransferable(type: Data.self)
-            }
-        }
     }
 }
 
@@ -72,4 +62,5 @@ struct AddPlantView: View {
         AddPlantView()
     }
     .environmentObject(PlantViewModel())
+    .environmentObject(LocalCareRepository())
 }
