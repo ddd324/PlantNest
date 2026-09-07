@@ -98,5 +98,15 @@
         "lightGuidance": "Bright indirect light.",
         "fertilisingGuidance": "Fertilise regularly during active growth.",
         "repottingGuidance": "Repot when roots become crowded."
+    },
+    {
+        "species": null,
+        "genus": "Monstera",
+        "wateringIntervalDays": 7,
+        "fertilisingIntervalDays": 28,
+        "waterGuidance": "Allow the top soil to dry slightly before watering.",
+        "lightGuidance": "Bright indirect light.",
+        "fertilisingGuidance": "Fertilise during active growth.",
+        "repottingGuidance": "Repot when roots become crowded."
     }
 ]

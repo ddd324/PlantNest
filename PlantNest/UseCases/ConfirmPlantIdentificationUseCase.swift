@@ -8,9 +8,6 @@
 import Foundation
 
 struct ConfirmPlantIdentificationUseCase {
-    enum ConfirmPlantIdentificationError: Error {
-        case noCandidateSelected
-    }
     
     private let careRepository: CareRepository
     
@@ -18,22 +15,21 @@ struct ConfirmPlantIdentificationUseCase {
         self.careRepository = careRepository
     }
     
-    func execute(candidate: PlantIdentificationCandidate?, name: String, imageData: Data) throws -> Plant {
-        guard let candidate else {
-            throw ConfirmPlantIdentificationError.noCandidateSelected
-        }
+    func execute(species: String, name: String, imageData: Data) -> Plant {
         
-        let carePlan = careRepository.fetchCarePlan(for: candidate.species)
+        let getCarePlanUseCase = GetCarePlanUseCase(repository: careRepository)
+        
+        let carePlan = getCarePlanUseCase.execute(species: species)
         
         return Plant(
             name: name,
-            species: candidate.species,
+            species: species,
             imageName: "",
             lastWateredDate: Date(),
             wateringIntervalDays: carePlan?.wateringIntervalDays ?? 7,
             imageData: imageData,
             lastFertilisedDate: nil,
-            fertilisingIntervalDays: carePlan?.fertilisingIntervalDays ?? 28
+            fertilisingIntervalDays: carePlan?.fertilisingIntervalDays
         )
     }
 }

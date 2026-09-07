@@ -61,6 +61,24 @@ struct IdentificationResultsView: View {
                 }
             }
             
+            Section {
+                Button {
+                    identificationViewModel.useManualSpecies = true
+                    identificationViewModel.selectedCandidate = nil
+                    identificationViewModel.errorMessage = nil
+                } label: {
+                    Label("My plant isn't listed", systemImage: "pencil")
+                }
+                
+                if identificationViewModel.useManualSpecies {
+                    TextField("Scientific name", text: $identificationViewModel.manualSpecies)
+                    
+                    Text("e.g. Monstera adansonii")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            
             Section("Plant Name") {
                 TextField("Enter a name for your plant", text: $identificationViewModel.plantName)
             }

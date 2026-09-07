@@ -97,12 +97,15 @@ struct PlantDetailView: View {
                 LabeledContent("Species", value: plant.species)
             }
             
-            if let carePlan = plantDetailViewModel.carePlan {
-                Section("Care Plan") {
+            Section("Care Plan") {
+                if let carePlan = plantDetailViewModel.carePlan {
                     LabeledContent("Water", value: carePlan.waterGuidance)
                     LabeledContent("Light", value: carePlan.lightGuidance)
                     LabeledContent("Fertilising", value: carePlan.fertilisingGuidance)
                     LabeledContent("Repotting", value: carePlan.repottingGuidance)
+                } else {
+                    Text("No care plan is available for this species yet")
+                        .foregroundStyle(.secondary)
                 }
             }
             

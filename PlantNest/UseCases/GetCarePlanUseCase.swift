@@ -15,6 +15,16 @@ struct GetCarePlanUseCase {
     }
     
     func execute(species: String) -> PlantCarePlan? {
-        repository.fetchCarePlan(for: species)
+        if let exactPlan = repository.fetchCarePlan(for: species) {
+            return exactPlan
+        }
+        
+        let genus = species.split(separator: " ").first.map(String.init)
+        
+        guard let genus else {
+            return nil
+        }
+        
+        return repository.fetchCarePlan(forGenus: genus)
     }
 }

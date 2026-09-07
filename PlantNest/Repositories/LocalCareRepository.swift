@@ -29,7 +29,13 @@ final class LocalCareRepository: CareRepository, ObservableObject {
     
     func fetchCarePlan(for species: String) -> PlantCarePlan? {
         carePlans.first { carePlan in
-            carePlan.species.lowercased() == species.lowercased()
+            carePlan.species?.lowercased() == species.lowercased()
+        }
+    }
+    
+    func fetchCarePlan(forGenus genus: String) -> PlantCarePlan? {
+        carePlans.first { carePlan in
+            carePlan.species == nil && carePlan.genus.lowercased() == genus.lowercased()
         }
     }
     

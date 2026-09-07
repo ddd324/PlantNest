@@ -8,7 +8,7 @@
 import Foundation
 
 struct PlantCarePlan: Codable {
-    let species: String
+    let species: String?
     let genus: String
     let wateringIntervalDays: Int
     let fertilisingIntervalDays: Int?
