@@ -104,7 +104,6 @@ struct ManualAddPlantView: View {
         let plant = Plant(name: plantName, species: species, imageName: "", lastWateredDate: Date(), wateringIntervalDays: wateringIntervalDays, imageData: selectedImageData, lastFertilisedDate: nil, fertilisingIntervalDays: carePlan?.fertilisingIntervalDays)
         
         plantViewModel.addPlant(plant)
-        dismiss()
         onPlantAdded()
     }
 }

@@ -9,7 +9,10 @@ import SwiftUI
 
 struct MyPlantsView: View {
     
+    @State private var showingAddPlant = false
+    
     @EnvironmentObject private var plantViewModel: PlantViewModel
+    @EnvironmentObject private var careRepository: LocalCareRepository
     
     var body: some View {
         List(plantViewModel.plants) { plant in
@@ -58,12 +61,19 @@ struct MyPlantsView: View {
         .navigationTitle("My Plants")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink {
-                    AddPlantView()
+                Button {
+                    showingAddPlant = true
                 } label: {
                     Image(systemName: "plus")
                 }
             }
+        }
+        .sheet(isPresented: $showingAddPlant) {
+            NavigationStack {
+                AddPlantView()
+            }
+            .environmentObject(plantViewModel)
+            .environmentObject(careRepository)
         }
         .onAppear{
             plantViewModel.loadPlants()

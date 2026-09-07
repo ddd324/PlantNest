@@ -24,7 +24,9 @@ struct AddPlantView: View {
             
             Section("Add Method") {
                 NavigationLink {
-                    IdentifyPlantView()
+                    IdentifyPlantView(onPlantAdded: {
+                        dismiss()
+                    })
                 } label: {
                     VStack(alignment: .leading, spacing: 6) {
                         Label("Identify from Photo", systemImage: "camera.viewfinder")
@@ -38,7 +40,9 @@ struct AddPlantView: View {
                 }
                 
                 NavigationLink {
-                    ManualAddPlantView(onPlantAdded: {})
+                    ManualAddPlantView(onPlantAdded: {
+                        dismiss()
+                    })
                 } label: {
                     VStack(alignment: .leading, spacing: 6) {
                         Label("Add Manually", systemImage: "square.and.pencil")

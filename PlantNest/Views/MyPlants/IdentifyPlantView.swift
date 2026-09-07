@@ -10,6 +10,8 @@ import PhotosUI
 
 struct IdentifyPlantView: View {
     
+    let onPlantAdded: () -> Void
+    
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     
@@ -52,7 +54,7 @@ struct IdentifyPlantView: View {
             if let selectedImageData {
                 Section {
                     NavigationLink {
-                        IdentificationResultsView(selectedImageData: selectedImageData, onPlantAdded: {})
+                        IdentificationResultsView(selectedImageData: selectedImageData, onPlantAdded: onPlantAdded)
                     } label: {
                         Label("Identify Plant", systemImage: "sparkles")
                     }
@@ -71,7 +73,7 @@ struct IdentifyPlantView: View {
 
 #Preview {
     NavigationStack {
-        IdentifyPlantView()
+        IdentifyPlantView(onPlantAdded: {})
     }
     .environmentObject(PlantViewModel())
     .environmentObject(LocalCareRepository())

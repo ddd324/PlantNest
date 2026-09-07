@@ -96,7 +96,6 @@ struct IdentificationResultsView: View {
                     
                     if let confirmedPlant = identificationViewModel.confirmedPlant {
                         plantViewModel.addPlant(confirmedPlant)
-                        dismiss()
                         onPlantAdded()
                     }
                 }
