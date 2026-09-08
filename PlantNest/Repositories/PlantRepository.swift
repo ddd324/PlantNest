@@ -9,4 +9,6 @@ import Foundation
 
 protocol PlantRepository {
     func fetchPlants() throws -> [Plant]
+    
+    func savePlants(_ plants: [Plant]) throws
 }

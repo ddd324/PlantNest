@@ -8,11 +8,20 @@
 import Foundation
 
 struct LocalPlantRepository: PlantRepository {
+    
+    private let storageKey = "savedPlants"
+    
     func fetchPlants() throws -> [Plant] {
-        guard let url = Bundle.main.url(
-            forResource: "SamplePlants",
-            withExtension: "json"
-        ) else {
+        if let savedData = UserDefaults.standard.data(forKey: storageKey) {
+            do {
+                let decoder = JSONDecoder()
+                return try decoder.decode([Plant].self, from: savedData)
+            } catch {
+                throw LocalPlantRepositoryError.decodingFailed
+            }
+        }
+        
+        guard let url = Bundle.main.url(forResource: "SamplePlants", withExtension: "json") else {
             throw LocalPlantRepositoryError.fileNotFound
         }
 
@@ -30,9 +39,20 @@ struct LocalPlantRepository: PlantRepository {
             throw LocalPlantRepositoryError.decodingFailed
         }
     }
+    
+    func savePlants(_ plants: [Plant]) throws {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(plants)
+            UserDefaults.standard.set(data, forKey: storageKey)
+        } catch {
+            throw LocalPlantRepositoryError.encodingFailed
+        }
+    }
 }
 
 enum LocalPlantRepositoryError: Error {
     case fileNotFound
     case decodingFailed
+    case encodingFailed
 }

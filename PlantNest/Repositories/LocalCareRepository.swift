@@ -13,8 +13,11 @@ final class LocalCareRepository: CareRepository, ObservableObject {
     private var records: [CareRecord] = []
     private var carePlans: [PlantCarePlan] = []
     
+    private let recordsStorageKey = "savedCareRecords"
+    
     init() {
         loadCarePlans()
+        loadCareRecords()
     }
     
     func fetchCareRecords(for plantID: UUID) throws -> [CareRecord] {
@@ -25,6 +28,7 @@ final class LocalCareRepository: CareRepository, ObservableObject {
     
     func addCareRecord(_ record: CareRecord) throws {
         records.append(record)
+        try saveCareRecords()
     }
     
     func fetchCarePlan(for species: String) -> PlantCarePlan? {
@@ -51,5 +55,23 @@ final class LocalCareRepository: CareRepository, ObservableObject {
         } catch {
             print("Failed to load care plans: \(error)")
         }
+    }
+    
+    private func loadCareRecords() {
+        guard let data = UserDefaults.standard.data(forKey: recordsStorageKey) else {
+            return
+        }
+        
+        do {
+            records = try JSONDecoder().decode([CareRecord].self, from: data)
+        } catch {
+            print("Failed to load care records: \(error)")
+        }
+    }
+    
+    private func saveCareRecords() throws {
+        let data = try JSONEncoder().encode(records)
+        
+        UserDefaults.standard.set(data, forKey: recordsStorageKey)
     }
 }

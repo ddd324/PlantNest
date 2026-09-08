@@ -14,6 +14,7 @@ struct WateringCheckView: View {
     @EnvironmentObject private var careRepository: LocalCareRepository
     @EnvironmentObject private var plantViewModel: PlantViewModel
     @StateObject private var viewModel = CareViewModel()
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         Form {
@@ -49,6 +50,7 @@ struct WateringCheckView: View {
                         Button("Record Watering") {
                             if let updatedPlant = viewModel.recordwatering(for: plant, repository: careRepository) {
                                 plantViewModel.updatePlant(updatedPlant)
+                                dismiss()
                             }
                         }
                     }

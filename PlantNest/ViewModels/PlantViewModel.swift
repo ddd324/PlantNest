@@ -31,6 +31,7 @@ final class PlantViewModel: ObservableObject {
     
     func addPlant(_ plant: Plant) {
         plants.append(plant)
+        savePlants()
     }
     
     func updatePlant(_ updatedPlant: Plant) {
@@ -39,5 +40,14 @@ final class PlantViewModel: ObservableObject {
         }
         
         plants[index] = updatedPlant
+        savePlants()
+    }
+    
+    private func savePlants() {
+        do {
+            try repository.savePlants(plants)
+        } catch {
+            print("Failed to save plants: \(error)")
+        }
     }
 }
