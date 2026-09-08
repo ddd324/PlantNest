@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		427AE89E30503D6A00E21B36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 427AE6D63045C09E00E21B36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 427AE6DD3045C09E00E21B36;
+			remoteInfo = PlantNest;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		427AE6DE3045C09E00E21B36 /* PlantNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlantNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		427AE89A30503D6A00E21B36 /* PlantNestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlantNestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +27,22 @@
 			path = PlantNest;
 			sourceTree = "<group>";
 		};
+		427AE89B30503D6A00E21B36 /* PlantNestTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PlantNestTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		427AE6DB3045C09E00E21B36 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		427AE89730503D6A00E21B36 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				427AE6E03045C09E00E21B36 /* PlantNest */,
+				427AE89B30503D6A00E21B36 /* PlantNestTests */,
 				427AE6DF3045C09E00E21B36 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				427AE6DE3045C09E00E21B36 /* PlantNest.app */,
+				427AE89A30503D6A00E21B36 /* PlantNestTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +95,29 @@
 			productReference = 427AE6DE3045C09E00E21B36 /* PlantNest.app */;
 			productType = "com.apple.product-type.application";
 		};
+		427AE89930503D6A00E21B36 /* PlantNestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 427AE8A030503D6A00E21B36 /* Build configuration list for PBXNativeTarget "PlantNestTests" */;
+			buildPhases = (
+				427AE89630503D6A00E21B36 /* Sources */,
+				427AE89730503D6A00E21B36 /* Frameworks */,
+				427AE89830503D6A00E21B36 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				427AE89F30503D6A00E21B36 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				427AE89B30503D6A00E21B36 /* PlantNestTests */,
+			);
+			name = PlantNestTests;
+			packageProductDependencies = (
+			);
+			productName = PlantNestTests;
+			productReference = 427AE89A30503D6A00E21B36 /* PlantNestTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -82,6 +130,10 @@
 				TargetAttributes = {
 					427AE6DD3045C09E00E21B36 = {
 						CreatedOnToolsVersion = 26.2;
+					};
+					427AE89930503D6A00E21B36 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 427AE6DD3045C09E00E21B36;
 					};
 				};
 			};
@@ -100,12 +152,20 @@
 			projectRoot = "";
 			targets = (
 				427AE6DD3045C09E00E21B36 /* PlantNest */,
+				427AE89930503D6A00E21B36 /* PlantNestTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		427AE6DC3045C09E00E21B36 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		427AE89830503D6A00E21B36 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +182,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		427AE89630503D6A00E21B36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		427AE89F30503D6A00E21B36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 427AE6DD3045C09E00E21B36 /* PlantNest */;
+			targetProxy = 427AE89E30503D6A00E21B36 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		427AE6E73045C0A000E21B36 /* Debug */ = {
@@ -310,6 +385,48 @@
 			};
 			name = Release;
 		};
+		427AE8A130503D6A00E21B36 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A4NL3Y362A;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiayi.PlantNestTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PlantNest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PlantNest";
+			};
+			name = Debug;
+		};
+		427AE8A230503D6A00E21B36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A4NL3Y362A;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiayi.PlantNestTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PlantNest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PlantNest";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -327,6 +444,15 @@
 			buildConfigurations = (
 				427AE6EA3045C0A000E21B36 /* Debug */,
 				427AE6EB3045C0A000E21B36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		427AE8A030503D6A00E21B36 /* Build configuration list for PBXNativeTarget "PlantNestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				427AE8A130503D6A00E21B36 /* Debug */,
+				427AE8A230503D6A00E21B36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

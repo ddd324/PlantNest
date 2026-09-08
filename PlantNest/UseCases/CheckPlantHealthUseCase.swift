@@ -13,7 +13,7 @@ struct CheckPlantHealthUseCase {
         case missingFollowUpAnswer
     }
     
-    func excute(symptom: PlantSymptom?, soilCondition: SoilCondition?, hasStrongDirectSunlight: Bool?, visiblePestSigns: Bool?) throws -> PlantHealthResult {
+    func execute(symptom: PlantSymptom?, soilCondition: SoilCondition?, hasStrongDirectSunlight: Bool?, visiblePestSigns: Bool?) throws -> PlantHealthResult {
         guard let symptom else {
             throw CheckPlantHealthError.missingSymptom
         }

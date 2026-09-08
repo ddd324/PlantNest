@@ -32,6 +32,9 @@ struct IdentificationResultsView: View {
             Section {
                 Text("We found a few possible matches. Choose your plant species.")
                     .foregroundStyle(.secondary)
+                Text("Identification results are simulated for this prototype.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
             
             Section("Possible Matches") {
