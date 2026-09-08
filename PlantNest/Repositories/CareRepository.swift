@@ -12,6 +12,8 @@ protocol CareRepository {
     
     func addCareRecord(_ record: CareRecord) throws
     
+    func deleteCareRecords(for plantID: UUID) throws
+    
     func fetchCarePlan(for species: String) -> PlantCarePlan?
     
     func fetchCarePlan(forGenus genus: String) -> PlantCarePlan?

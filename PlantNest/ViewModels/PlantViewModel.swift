@@ -43,6 +43,11 @@ final class PlantViewModel: ObservableObject {
         savePlants()
     }
     
+    func deletePlant(_ plant: Plant) {
+        plants.removeAll() { $0.id == plant.id }
+        savePlants()
+    }
+    
     private func savePlants() {
         do {
             try repository.savePlants(plants)

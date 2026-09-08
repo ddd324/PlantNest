@@ -10,6 +10,8 @@ import SwiftUI
 struct MyPlantsView: View {
     
     @State private var showingAddPlant = false
+    @State private var plantToDelete: Plant?
+    @State private var showingDeleteConfirmation = false
     
     @EnvironmentObject private var plantViewModel: PlantViewModel
     @EnvironmentObject private var careRepository: LocalCareRepository
@@ -56,6 +58,15 @@ struct MyPlantsView: View {
                     }
                 }
                 .padding(.vertical, 4)
+                .swipeActions {
+                    Button {
+                        plantToDelete = plant
+                        showingDeleteConfirmation = true
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                    .tint(.red)
+                }
             }
         }
         .navigationTitle("My Plants")
@@ -77,6 +88,30 @@ struct MyPlantsView: View {
         }
         .onAppear{
             plantViewModel.loadPlants()
+        }
+        .alert("Delete Plant?", isPresented: $showingDeleteConfirmation, presenting: plantToDelete) { plant in
+            Button("Cancel", role: .cancel) {
+                plantToDelete = nil
+            }
+            Button("Delete", role: .destructive) {
+                deleteSelectedPlant()
+            }
+        } message: { plant in
+            Text("Are you sure you want to delete \(plant.name)? This will also remove the plant's care history.")
+        }
+    }
+    
+    private func deleteSelectedPlant() {
+        guard let plant = plantToDelete else {
+            return
+        }
+        
+        do {
+            try careRepository.deleteCareRecords(for: plant.id)
+            plantViewModel.deletePlant(plant)
+            plantToDelete = nil
+        } catch {
+            print("Failed to delete plant: \(error)")
         }
     }
     

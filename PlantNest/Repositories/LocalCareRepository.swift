@@ -31,6 +31,13 @@ final class LocalCareRepository: CareRepository, ObservableObject {
         try saveCareRecords()
     }
     
+    func deleteCareRecords(for plantID: UUID) throws {
+        records.removeAll { record in
+            record.plantID == plantID
+        }
+        try saveCareRecords()
+    }
+    
     func fetchCarePlan(for species: String) -> PlantCarePlan? {
         carePlans.first { carePlan in
             carePlan.species?.lowercased() == species.lowercased()
