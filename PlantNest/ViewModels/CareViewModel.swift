@@ -13,8 +13,8 @@ final class CareViewModel: ObservableObject {
     @Published var selectedSoilCondition: SoilCondition?
     @Published var recommendation: AssessWateringNeedUseCase.WateringRecommendation?
     
-    @Published var dueToday: [GenerateCareScheduleUseCase.CareItem] = []
-    @Published var upcoming: [GenerateCareScheduleUseCase.CareItem] = []
+    @Published var dueToday: [GenerateCareScheduleUseCase.CareTask] = []
+    @Published var upcoming: [GenerateCareScheduleUseCase.CareTask] = []
     
     @Published var recordMessage: String?
     

@@ -1,5 +1,5 @@
 //
-//  GenerateCarePlanUseCase.swift
+//  GenerateCareScheduleUseCase.swift
 //  PlantNest
 //
 //  Created by Djy on 02/09/2026.
@@ -9,27 +9,27 @@ import Foundation
 
 struct GenerateCareScheduleUseCase {
     
-    enum GenerateCarePlanError: Error {
+    enum GenerateCareScheduleError: Error {
         case invalidWateringInterval
-        case invalidFertilisingnterval
+        case invalidFertilisingInterval
     }
     
-    struct CareItem: Identifiable {
+    struct CareTask: Identifiable {
         let id = UUID()
         let plant: Plant
         let activityType: CareActivityType
         let daysRemaining: Int
     }
     
-    struct CarePlan {
-        let dueToday: [CareItem]
-        let upcoming: [CareItem]
+    struct CareSchedule {
+        let dueToday: [CareTask]
+        let upcoming: [CareTask]
     }
     
-    func execute(plants: [Plant], currentDate: Date = Date()) throws -> CarePlan {
+    func execute(plants: [Plant], currentDate: Date = Date()) throws -> CareSchedule {
         
-        var dueToday: [CareItem] = []
-        var upcoming: [CareItem] = []
+        var dueToday: [CareTask] = []
+        var upcoming: [CareTask] = []
         
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: currentDate)
@@ -37,13 +37,13 @@ struct GenerateCareScheduleUseCase {
         for plant in plants {
             // Watering
             guard plant.wateringIntervalDays > 0 else {
-                throw GenerateCarePlanError.invalidWateringInterval
+                throw GenerateCareScheduleError.invalidWateringInterval
             }
             
             if let nextWateringDate = calendar.date(byAdding: .day, value: plant.wateringIntervalDays, to: plant.lastWateredDate) {
                 let wateringDay = calendar.startOfDay(for: nextWateringDate)
                 let daysRemaining = calendar.dateComponents([.day], from: today, to: wateringDay).day ?? 0
-                let item = CareItem(plant: plant, activityType: .watering, daysRemaining: daysRemaining)
+                let item = CareTask(plant: plant, activityType: .watering, daysRemaining: daysRemaining)
                 
                 if daysRemaining <= 0 {
                     dueToday.append(item)
@@ -55,13 +55,13 @@ struct GenerateCareScheduleUseCase {
             //Fertilising
             if let lastFertilisedDate = plant.lastFertilisedDate, let fertilisingIntervalDays = plant.fertilisingIntervalDays {
                 guard fertilisingIntervalDays > 0 else {
-                    throw GenerateCarePlanError.invalidFertilisingnterval
+                    throw GenerateCareScheduleError.invalidFertilisingInterval
                 }
                 
                 if let nextFertilisingDate = calendar.date(byAdding: .day, value: fertilisingIntervalDays, to: lastFertilisedDate) {
                     let fertilisingDay = calendar.startOfDay(for: nextFertilisingDate)
                     let daysRemaining = calendar.dateComponents([.day], from: today, to: fertilisingDay).day ?? 0
-                    let item = CareItem(plant: plant, activityType: .fertilising, daysRemaining: daysRemaining)
+                    let item = CareTask(plant: plant, activityType: .fertilising, daysRemaining: daysRemaining)
                     
                     if daysRemaining <= 0 {
                         dueToday.append(item)
@@ -76,6 +76,6 @@ struct GenerateCareScheduleUseCase {
             $0.daysRemaining < $1.daysRemaining
         }
         
-        return CarePlan(dueToday: dueToday, upcoming: upcoming)
+        return CareSchedule(dueToday: dueToday, upcoming: upcoming)
     }
 }
