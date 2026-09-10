@@ -13,10 +13,14 @@ struct CareHistoryView: View {
     
     @EnvironmentObject private var careRepository: LocalCareRepository
     @State private var records: [CareRecord] = []
+    @State private var errorMessage: String?
     
     var body: some View {
         List {
-            if records.isEmpty {
+            if let errorMessage {
+                Text(errorMessage)
+                    .foregroundStyle(.secondary)
+            } else if records.isEmpty {
                 Text("No care records yet.")
                     .foregroundStyle(.secondary)
             } else {
@@ -43,8 +47,9 @@ struct CareHistoryView: View {
         do {
             records = try careRepository.fetchCareRecords(for: plant.id)
                 .sorted { $0.date > $1.date}
+            errorMessage = nil
         } catch {
-            print("Failed to load care records: \(error)")
+            errorMessage = "Care history could not be loaded. Please try again."
         }
     }
 }

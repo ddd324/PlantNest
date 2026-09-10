@@ -14,6 +14,7 @@ struct IdentifyPlantView: View {
     
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
+    @State private var photoErrorMessage: String?
     
     var body: some View {
         Form {
@@ -49,6 +50,10 @@ struct IdentifyPlantView: View {
                         Label("Change Photo", systemImage: "photo")
                     }
                 }
+                if let photoErrorMessage {
+                    Text(photoErrorMessage)
+                        .foregroundStyle(.secondary)
+                }
             }
             
             if let selectedImageData {
@@ -65,7 +70,14 @@ struct IdentifyPlantView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: selectedPhoto) { _, newPhoto in
             Task {
-                selectedImageData = try? await newPhoto?.loadTransferable(type: Data.self)
+                do {
+                    guard let newPhoto else { return }
+                    selectedImageData = try await newPhoto.loadTransferable(type: Data.self)
+                    photoErrorMessage = nil
+                } catch {
+                    selectedImageData = nil
+                    photoErrorMessage = "The photo could not be loaded. Please choose another photo."
+                }
             }
         }
     }

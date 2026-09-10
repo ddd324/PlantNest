@@ -43,7 +43,7 @@ struct WateringCheckView: View {
             }
             
             if let recommendation = viewModel.recommendation {
-                Section("Recomendation") {
+                Section("Recommendation") {
                     Text(recommendation.message)
                     
                     if recommendation.shouldWater {

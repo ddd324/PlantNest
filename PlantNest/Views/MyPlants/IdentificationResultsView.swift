@@ -15,7 +15,6 @@ struct IdentificationResultsView: View {
     @StateObject private var identificationViewModel = IdentificationViewModel()
     @EnvironmentObject private var plantViewModel: PlantViewModel
     @EnvironmentObject private var careRepository: LocalCareRepository
-    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         List {

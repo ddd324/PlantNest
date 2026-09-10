@@ -14,7 +14,6 @@ struct ManualAddPlantView: View {
     
     @EnvironmentObject private var plantViewModel: PlantViewModel
     @EnvironmentObject private var careRepository: LocalCareRepository
-    @Environment(\.dismiss) private var dismiss
     
     @State private var plantName = ""
     @State private var species = ""
@@ -22,6 +21,7 @@ struct ManualAddPlantView: View {
     @State private var errorMessage: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
+    @State private var photoErrorMessage: String?
     
     var body: some View {
         Form {
@@ -55,6 +55,11 @@ struct ManualAddPlantView: View {
                     }
                     .buttonStyle(.plain)
                 }
+                
+                if let photoErrorMessage {
+                    Text(photoErrorMessage)
+                        .foregroundStyle(.secondary)
+                }
             }
             Section("Plant Information") {
                 TextField("Plant name", text: $plantName)
@@ -82,7 +87,14 @@ struct ManualAddPlantView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: selectedPhoto) { _, newPhoto in
             Task {
-                selectedImageData = try? await newPhoto?.loadTransferable(type: Data.self)
+                do {
+                    guard let newPhoto else { return }
+                    selectedImageData = try await newPhoto.loadTransferable(type: Data.self)
+                    photoErrorMessage = nil
+                } catch {
+                    selectedImageData = nil
+                    photoErrorMessage = "The photo could not be loaded. Please choose another photo."
+                }
             }
         }
     }
@@ -99,7 +111,8 @@ struct ManualAddPlantView: View {
             return
         }
         
-        let carePlan = careRepository.fetchCarePlan(for: species)
+        let getCarePlanUseCase = GetCarePlanUseCase(repository: careRepository)
+        let carePlan = try? getCarePlanUseCase.execute(species: species)
         
         let plant = Plant(name: plantName, species: species, imageName: "", lastWateredDate: Date(), wateringIntervalDays: wateringIntervalDays, imageData: selectedImageData, lastFertilisedDate: nil, fertilisingIntervalDays: carePlan?.fertilisingIntervalDays)
         

@@ -82,11 +82,11 @@ struct AddCareRecordView: View {
             plantViewModel.updatePlant(updatedPlant)
             dismiss()
         } catch RecordCareActivityUseCase.RecordCareActivityError.futureDate {
-            message = "The care data cannot be in the future."
+            message = "The care date cannot be in the future."
         } catch RecordCareActivityUseCase.RecordCareActivityError.duplicateRecord {
-            message = "\(selectedActivity.rawValue) has already been recorded for this date"
+            message = "\(selectedActivity.rawValue) has already been recorded for this date."
         } catch {
-            message = "Unable to save care record."
+            message = "The care record could not be saved. Please try again."
         }
     }
 }

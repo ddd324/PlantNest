@@ -104,7 +104,7 @@ struct PlantDetailView: View {
                     LabeledContent("Fertilising", value: carePlan.fertilisingGuidance)
                     LabeledContent("Repotting", value: carePlan.repottingGuidance)
                 } else {
-                    Text("No care plan is available for this species yet")
+                    Text("No care plan is available for this species yet. You can still add care records manually.")
                         .foregroundStyle(.secondary)
                 }
             }
@@ -195,4 +195,5 @@ struct PlantDetailView: View {
         ))
     }
     .environmentObject(LocalCareRepository())
+    .environmentObject(PlantViewModel())
 }

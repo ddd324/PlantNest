@@ -60,7 +60,7 @@ final class CareViewModel: ObservableObject {
             recordMessage = "Watering has already been recorded today."
             return nil
         } catch {
-            recordMessage = "Unable to record watering."
+            recordMessage = "Watering could not be recorded. Please try again."
             return nil
         }
     }

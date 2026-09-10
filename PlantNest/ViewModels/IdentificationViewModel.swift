@@ -31,6 +31,9 @@ final class IdentificationViewModel: ObservableObject {
     }
     
     func confirmSelection(imageData: Data, careRepository: CareRepository) {
+        confirmedPlant = nil
+        errorMessage = nil
+        
         guard !plantName.isEmpty else {
                 errorMessage = "Please enter a plant name."
                 return
@@ -58,7 +61,7 @@ final class IdentificationViewModel: ObservableObject {
             confirmedPlant = try confirmPlantIdentificationUseCase.execute(species: species, name: plantName, imageData: imageData)
             errorMessage = nil
         } catch {
-            errorMessage = "Unable to add this plant."
+            errorMessage = "Unable to add this plant. Please try again."
         }
     }
 }
