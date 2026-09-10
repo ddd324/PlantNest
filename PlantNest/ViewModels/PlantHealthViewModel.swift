@@ -48,7 +48,8 @@ final class PlantHealthViewModel: ObservableObject {
             result = try checkPlantHealthUseCase.execute(symptom: selectedSymptom, soilCondition: selectedSoilCondition, hasStrongDirectSunlight: hasStrongDirectSunlight, visiblePestSigns: visiblePestSigns)
             errorMessage = nil
         } catch {
-            errorMessage = "Unable to check plant health."
+            result = nil
+            errorMessage = "Plant health could not be checked. Please review your answers and try again."
         }
     }
 }

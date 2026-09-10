@@ -151,6 +151,13 @@ struct PlantHealthQuestionsView: View {
                     }
                 }
             }
+            
+            if let errorMessage = plantHealthViewModel.errorMessage {
+                Section {
+                    Text(errorMessage)
+                        .foregroundStyle(.red)
+                }
+            }
 
             if let result = plantHealthViewModel.result {
                 Section("Possible Cause") {
@@ -165,26 +172,6 @@ struct PlantHealthQuestionsView: View {
         }
         .navigationTitle("Plant Health")
         .navigationBarTitleDisplayMode(.inline)
-    }
-    
-    private var canShowResult: Bool {
-        guard let symptom = plantHealthViewModel.selectedSymptom else {
-            return false
-        }
-
-        switch symptom {
-        case .yellowLeaves:
-            return plantHealthViewModel.selectedSoilCondition != nil
-
-        case .brownSpots:
-            return plantHealthViewModel.hasStrongDirectSunlight != nil
-
-        case .drooping:
-            return plantHealthViewModel.selectedSoilCondition != nil
-
-        case .pests:
-            return plantHealthViewModel.visiblePestSigns != nil
-        }
     }
 }
 

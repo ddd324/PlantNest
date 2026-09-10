@@ -14,7 +14,12 @@ struct PlantHealthView: View {
     var body: some View {
         List {
             Section {
-                Text("Select a plant to check its health.")
+                if plantViewModel.plants.isEmpty {
+                    Text("Add a plant first to check its health.")
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text("Select a plant to check its health.")
+                }
             }
             
             Section("My Plants") {
