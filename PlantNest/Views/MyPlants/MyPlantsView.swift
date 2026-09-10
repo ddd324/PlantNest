@@ -12,6 +12,7 @@ struct MyPlantsView: View {
     @State private var showingAddPlant = false
     @State private var plantToDelete: Plant?
     @State private var showingDeleteConfirmation = false
+    @State private var deleteErrorMessage: String?
     
     @EnvironmentObject private var plantViewModel: PlantViewModel
     @EnvironmentObject private var careRepository: LocalCareRepository
@@ -99,6 +100,16 @@ struct MyPlantsView: View {
         } message: { plant in
             Text("Are you sure you want to delete \(plant.name)? This will also remove the plant's care history.")
         }
+        .alert("Unable to Delete Plant", isPresented: Binding(
+            get: { deleteErrorMessage != nil },
+            set: { if !$0 { deleteErrorMessage = nil } }
+        )) {
+            Button("OK", role: .cancel) {
+                deleteErrorMessage = nil
+            }
+        } message: {
+            Text(deleteErrorMessage ?? "")
+        }
     }
     
     private func deleteSelectedPlant() {
@@ -111,7 +122,7 @@ struct MyPlantsView: View {
             plantViewModel.deletePlant(plant)
             plantToDelete = nil
         } catch {
-            print("Failed to delete plant: \(error)")
+            deleteErrorMessage = "This plant could not be deleted. Please try again."
         }
     }
     

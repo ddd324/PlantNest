@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// Represents an indoor plant owned and cared for by the user.
+/// Stores the plant's identity and care timing information.
 struct Plant: Identifiable, Codable, Equatable {
     
     let id: UUID

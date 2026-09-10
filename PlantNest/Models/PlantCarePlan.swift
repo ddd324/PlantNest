@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// Represents care guidance for a plant species or genus.
+/// Provides recommended care intervals and instructions.
 struct PlantCarePlan: Codable {
     let species: String?
     let genus: String

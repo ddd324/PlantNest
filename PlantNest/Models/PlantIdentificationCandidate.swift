@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Represents a possible plant identification result with a confidence score.
 struct PlantIdentificationCandidate {
     let species: String
     let confidence: Int

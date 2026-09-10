@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Represents a visible plant health symptom selected by the user.
 enum PlantSymptom: String, CaseIterable {
     case yellowLeaves = "Yellow Leaves"
     case brownSpots = "Brown Spots"

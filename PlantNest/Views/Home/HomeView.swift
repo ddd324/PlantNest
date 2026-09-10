@@ -16,7 +16,7 @@ struct HomeView: View {
         List {
             Section("Today's Care") {
                 if careViewModel.dueToday.isEmpty {
-                    Text("No watering tasks today")
+                    Text("No care tasks today")
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(careViewModel.dueToday) { item in
