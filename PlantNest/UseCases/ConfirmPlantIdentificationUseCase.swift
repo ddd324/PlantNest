@@ -9,17 +9,29 @@ import Foundation
 
 struct ConfirmPlantIdentificationUseCase {
     
+    enum ConfirmPlantIdentificationError: Error {
+            case missingName
+            case missingSpecies
+        }
+    
     private let careRepository: CareRepository
     
     init(careRepository: CareRepository) {
         self.careRepository = careRepository
     }
     
-    func execute(species: String, name: String, imageData: Data) -> Plant {
+    func execute(species: String, name: String, imageData: Data) throws -> Plant {
+        guard !name.isEmpty else {
+            throw ConfirmPlantIdentificationError.missingName
+        }
+        
+        guard !species.isEmpty else {
+            throw ConfirmPlantIdentificationError.missingSpecies
+        }
         
         let getCarePlanUseCase = GetCarePlanUseCase(repository: careRepository)
         
-        let carePlan = getCarePlanUseCase.execute(species: species)
+        let carePlan = try? getCarePlanUseCase.execute(species: species)
         
         return Plant(
             name: name,

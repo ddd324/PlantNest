@@ -8,23 +8,28 @@
 import Foundation
 
 struct GetCarePlanUseCase {
+    
+    enum GetCarePlanError: Error {
+        case carePlanNotFound
+    }
+    
     private let repository: CareRepository
     
     init(repository: CareRepository) {
         self.repository = repository
     }
     
-    func execute(species: String) -> PlantCarePlan? {
+    func execute(species: String) throws -> PlantCarePlan {
         if let exactPlan = repository.fetchCarePlan(for: species) {
             return exactPlan
         }
         
         let genus = species.split(separator: " ").first.map(String.init)
         
-        guard let genus else {
-            return nil
+        guard let genus, let genusPlan = repository.fetchCarePlan(for: genus) else {
+            throw GetCarePlanError.carePlanNotFound
         }
         
-        return repository.fetchCarePlan(forGenus: genus)
+        return genusPlan
     }
 }

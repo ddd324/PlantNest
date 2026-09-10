@@ -46,16 +46,19 @@ final class IdentificationViewModel: ObservableObject {
             species = manualSpecies
         } else {
             guard let selectedCandidate else {
-                errorMessage = "Please enter a species."
+                errorMessage = "Please select a species."
                 return
             }
             species = selectedCandidate.species
         }
         
-        let confirmUseCase = ConfirmPlantIdentificationUseCase(careRepository: careRepository)
+        let confirmPlantIdentificationUseCase = ConfirmPlantIdentificationUseCase(careRepository: careRepository)
         
-        confirmedPlant = confirmUseCase.execute(species: species, name: plantName, imageData: imageData)
-        
-        errorMessage = nil
+        do {
+            confirmedPlant = try confirmPlantIdentificationUseCase.execute(species: species, name: plantName, imageData: imageData)
+            errorMessage = nil
+        } catch {
+            errorMessage = "Unable to add this plant."
+        }
     }
 }

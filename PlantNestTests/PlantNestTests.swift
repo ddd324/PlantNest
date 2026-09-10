@@ -167,7 +167,7 @@ struct PlantNestTests {
         }
     }
     
-    @Test func getCarePlan_returnsExactSpeciesPlan_whenSpeciesMatchExists() {
+    @Test func getCarePlan_returnsExactSpeciesPlan_whenSpeciesMatchExists() throws {
         let repository = MockCareRepository()
         repository.carePlans = [
             PlantCarePlan(
@@ -193,13 +193,13 @@ struct PlantNestTests {
         ]
         
         let useCase = GetCarePlanUseCase(repository: repository)
-        let result = useCase.execute(species: "Monstera deliciosa")
+        let result = try useCase.execute(species: "Monstera deliciosa")
         
-        #expect(result?.species == "Monstera deliciosa")
-        #expect(result?.wateringIntervalDays == 7)
+        #expect(result.species == "Monstera deliciosa")
+        #expect(result.wateringIntervalDays == 7)
     }
     
-    @Test func getCarePlan_returnsGenusPlan_whenExactSpeciesPlanDoesNotExist() {
+    @Test func getCarePlan_returnsGenusPlan_whenExactSpeciesPlanDoesNotExist() throws {
         let repository = MockCareRepository()
         repository.carePlans = [
             PlantCarePlan(
@@ -215,23 +215,23 @@ struct PlantNestTests {
         ]
         
         let useCase = GetCarePlanUseCase(repository: repository)
-        let result = useCase.execute(species: "Monstera adansonii")
+        let result = try useCase.execute(species: "Monstera adansonii")
         
-        #expect(result != nil)
-        #expect(result?.species == nil)
-        #expect(result?.genus == "Monstera")
+        #expect(result.species == nil)
+        #expect(result.genus == "Monstera")
     }
     
     @Test func getCarePlan_returnsNil_whenNoSpeciesOrGenusPlanExists() {
         let repository = MockCareRepository()
         repository.carePlans = []
         let useCase = GetCarePlanUseCase(repository: repository)
-        let result = useCase.execute(species: "Unknown plant")
         
-        #expect(result == nil)
+        #expect(throws: GetCarePlanUseCase.GetCarePlanError.carePlanNotFound) {
+            try useCase.execute(species: "Unknown plant")
+        }
     }
     
-    @Test func confirmPlantIdentification_usesCarePlanIntervals_whenSpeciesPlanExists() {
+    @Test func confirmPlantIdentification_usesCarePlanIntervals_whenSpeciesPlanExists() throws {
         let repository = MockCareRepository()
         repository.carePlans = [
             PlantCarePlan(
@@ -247,7 +247,7 @@ struct PlantNestTests {
         ]
         let useCase = ConfirmPlantIdentificationUseCase(careRepository: repository)
         let imageData = Data([1, 2, 3])
-        let plant = useCase.execute(species: "Monstera deliciosa", name: "Monty", imageData: imageData)
+        let plant = try useCase.execute(species: "Monstera deliciosa", name: "Monty", imageData: imageData)
         
         #expect(plant.name == "Monty")
         #expect(plant.species == "Monstera deliciosa")
@@ -256,15 +256,24 @@ struct PlantNestTests {
         #expect(plant.imageData == imageData)
     }
     
-    @Test func confirmPlantIdentification_usesDefaultWateringInterval_whenCarePlanDoesNotExist() {
+    @Test func confirmPlantIdentification_usesDefaultWateringInterval_whenCarePlanDoesNotExist() throws {
         let repository = MockCareRepository()
         repository.carePlans = []
         let useCase = ConfirmPlantIdentificationUseCase(careRepository: repository)
-        let plant = useCase.execute(species: "Unknown plant", name: "Mystery", imageData: Data())
+        let plant = try useCase.execute(species: "Unknown plant", name: "Mystery", imageData: Data())
         
         #expect(plant.species == "Unknown plant")
         #expect(plant.wateringIntervalDays == 7)
         #expect(plant.fertilisingIntervalDays == nil)
+    }
+    
+    @Test func confirmPlantIdentification_fails_whenPlantNameIsMissing() {
+        let repository = MockCareRepository()
+        let useCase = ConfirmPlantIdentificationUseCase(careRepository: repository)
+        
+        #expect(throws: ConfirmPlantIdentificationUseCase.ConfirmPlantIdentificationError.missingName) {
+            try useCase.execute(species: "Monstera deliciosa", name: "", imageData: Data())
+        }
     }
     
     @Test func plantViewModel_addPlant_addsAndSavesPlant()  {

@@ -13,7 +13,11 @@ final class PlantDetailViewModel: ObservableObject {
     @Published var carePlan: PlantCarePlan?
     
     func loadCarePlan(for species: String, repository: CareRepository) {
-        let  useCase = GetCarePlanUseCase(repository: repository)
-        carePlan = useCase.execute(species: species)
+        let  getCarePlanUseCase = GetCarePlanUseCase(repository: repository)
+        do {
+            carePlan = try getCarePlanUseCase.execute(species: species)
+        } catch {
+            carePlan = nil
+        }
     }
 }

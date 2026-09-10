@@ -17,7 +17,7 @@ final class PlantHealthViewModel: ObservableObject {
     @Published var hasStrongDirectSunlight: Bool?
     @Published var visiblePestSigns: Bool?
     
-    private let useCase = CheckPlantHealthUseCase()
+    private let checkPlantHealthUseCase = CheckPlantHealthUseCase()
     
     func selectSymptom(_ symptom: PlantSymptom) {
         selectedSymptom = symptom
@@ -45,7 +45,7 @@ final class PlantHealthViewModel: ObservableObject {
     
     func generateResult() {
         do {
-            result = try useCase.execute(symptom: selectedSymptom, soilCondition: selectedSoilCondition, hasStrongDirectSunlight: hasStrongDirectSunlight, visiblePestSigns: visiblePestSigns)
+            result = try checkPlantHealthUseCase.execute(symptom: selectedSymptom, soilCondition: selectedSoilCondition, hasStrongDirectSunlight: hasStrongDirectSunlight, visiblePestSigns: visiblePestSigns)
             errorMessage = nil
         } catch {
             errorMessage = "Unable to check plant health."
