@@ -26,7 +26,7 @@ struct GetCarePlanUseCase {
         
         let genus = species.split(separator: " ").first.map(String.init)
         
-        guard let genus, let genusPlan = repository.fetchCarePlan(for: genus) else {
+        guard let genus, let genusPlan = repository.fetchCarePlan(forGenus: genus) else {
             throw GetCarePlanError.carePlanNotFound
         }
         
