@@ -325,7 +325,7 @@ struct PlantNestTests {
         let viewModel = CareViewModel()
         let originalDate = Date(timeIntervalSince1970: 1_000_000)
         let recordDate = Date(timeIntervalSince1970: 2_000_000)
-        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: Date(), wateringIntervalDays: 7)
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: originalDate, wateringIntervalDays: 7)
         let record = CareRecord(plantID: plant.id, activityType: .watering, date: recordDate)
         let updatedPlant = viewModel.updatePlant(after: record, originalPlant: plant)
         
@@ -367,7 +367,7 @@ struct PlantNestTests {
         let viewModel = CareViewModel()
         let oldDate = Date(timeIntervalSince1970: 1_000_000)
         let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: oldDate, wateringIntervalDays: 7)
-        let updatedPlant = viewModel.recordwatering(for: plant, repository: repository)
+        let updatedPlant = viewModel.recordWatering(for: plant, repository: repository)
         
         #expect(updatedPlant != nil)
         #expect(updatedPlant?.lastWateredDate != oldDate)
@@ -383,7 +383,7 @@ struct PlantNestTests {
         
         try repository.addCareRecord(existingRecord)
         
-        let updatedPlant = viewModel.recordwatering(for: plant, repository: repository)
+        let updatedPlant = viewModel.recordWatering(for: plant, repository: repository)
         
         #expect(updatedPlant == nil)
         #expect(viewModel.recordMessage == "Watering has already been recorded today.")

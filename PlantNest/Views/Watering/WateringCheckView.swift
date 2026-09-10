@@ -48,7 +48,7 @@ struct WateringCheckView: View {
                     
                     if recommendation.shouldWater {
                         Button("Record Watering") {
-                            if let updatedPlant = viewModel.recordwatering(for: plant, repository: careRepository) {
+                            if let updatedPlant = viewModel.recordWatering(for: plant, repository: careRepository) {
                                 plantViewModel.updatePlant(updatedPlant)
                                 dismiss()
                             }

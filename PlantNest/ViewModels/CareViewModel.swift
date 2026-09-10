@@ -45,7 +45,7 @@ final class CareViewModel: ObservableObject {
         }
     }
     
-    func recordwatering(for plant: Plant, repository: CareRepository) -> Plant? {
+    func recordWatering(for plant: Plant, repository: CareRepository) -> Plant? {
         
         let useCase = RecordCareActivityUseCase(repository: repository)
         
