@@ -19,11 +19,11 @@ final class CareViewModel: ObservableObject {
     @Published var recordMessage: String?
     
     private let assessWateringNeedUseCase: AssessWateringNeedUseCase
-    private let generateCarePlanUseCase: GenerateCareScheduleUseCase
+    private let generateCareScheduleUseCase: GenerateCareScheduleUseCase
     
-    init(assessWateringNeedUseCase: AssessWateringNeedUseCase = AssessWateringNeedUseCase(), generateCarePlanUseCase: GenerateCareScheduleUseCase = GenerateCareScheduleUseCase()) {
+    init(assessWateringNeedUseCase: AssessWateringNeedUseCase = AssessWateringNeedUseCase(), generateCareScheduleUseCase: GenerateCareScheduleUseCase = GenerateCareScheduleUseCase()) {
         self.assessWateringNeedUseCase = assessWateringNeedUseCase
-        self.generateCarePlanUseCase = generateCarePlanUseCase
+        self.generateCareScheduleUseCase = generateCareScheduleUseCase
     }
     
     func selectSoilCondition(_ condition: SoilCondition, for plant: Plant) {
@@ -34,14 +34,14 @@ final class CareViewModel: ObservableObject {
         recordMessage = nil
     }
     
-    func generateCarePlan(for plants: [Plant]) {
+    func generateCareSchedule(for plants: [Plant]) {
         do {
-            let carePlan = try generateCarePlanUseCase.execute(plants: plants)
+            let careSchedule = try generateCareScheduleUseCase.execute(plants: plants)
             
-            dueToday = carePlan.dueToday
-            upcoming = carePlan.upcoming
+            dueToday = careSchedule.dueToday
+            upcoming = careSchedule.upcoming
         } catch {
-            print("Failed to generate care plan: \(error)")
+            print("Failed to generate care schedule: \(error)")
         }
     }
     

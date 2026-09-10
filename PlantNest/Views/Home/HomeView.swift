@@ -73,10 +73,10 @@ struct HomeView: View {
         .navigationTitle("Home")
         .onAppear {
             plantViewModel.loadPlants()
-            careViewModel.generateCarePlan(for: plantViewModel.plants)
+            careViewModel.generateCareSchedule(for: plantViewModel.plants)
         }
         .onChange(of: plantViewModel.plants) { _, newPlants in
-            careViewModel.generateCarePlan(for: newPlants)
+            careViewModel.generateCareSchedule(for: newPlants)
             
         }
     }
