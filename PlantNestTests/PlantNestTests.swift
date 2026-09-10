@@ -266,4 +266,179 @@ struct PlantNestTests {
         #expect(plant.wateringIntervalDays == 7)
         #expect(plant.fertilisingIntervalDays == nil)
     }
+    
+    @Test func plantViewModel_addPlant_addsAndSavesPlant()  {
+        let repository = MockPlantRepository()
+        let viewModel = PlantViewModel(repository: repository)
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: Date(), wateringIntervalDays: 7)
+        viewModel.addPlant(plant)
+        
+        #expect(viewModel.plants.count == 1)
+        #expect(viewModel.plants.first?.name == "Monty")
+        #expect(repository.savedPlants.count == 1)
+        #expect(repository.savedPlants.first?.id == plant.id)
+    }
+    
+    @Test func plantViewModel_updatePlant_updatesAndSavesPlant() {
+        let repository = MockPlantRepository()
+        let viewModel = PlantViewModel(repository: repository)
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: Date(), wateringIntervalDays: 7)
+        viewModel.addPlant(plant)
+        
+        var updatedPlant = plant
+        updatedPlant.name = "Monty Updated"
+        updatedPlant.wateringIntervalDays = 10
+        viewModel.updatePlant(updatedPlant)
+        
+        #expect(viewModel.plants.count == 1)
+        #expect(viewModel.plants.first?.name == "Monty Updated")
+        #expect(viewModel.plants.first?.wateringIntervalDays == 10)
+        #expect(repository.savedPlants.count == 1)
+        #expect(repository.savedPlants.first?.name == "Monty Updated")
+    }
+    
+    @Test func plantViewModel_deletePlant_removesAndSavesPlant() {
+        let repository = MockPlantRepository()
+        let viewModel = PlantViewModel(repository: repository)
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: Date(), wateringIntervalDays: 7)
+        viewModel.addPlant(plant)
+        viewModel.deletePlant(plant)
+        
+        #expect(viewModel.plants.isEmpty)
+        #expect(repository.savedPlants.isEmpty)
+    }
+    
+    @Test func plantViewModel_loadPlants_loadsPlantsFromRepository() {
+        let repository = MockPlantRepository()
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: Date(), wateringIntervalDays: 7)
+        repository.plants = [plant]
+        
+        let viewModel = PlantViewModel(repository: repository)
+        viewModel.loadPlants()
+        
+        #expect(viewModel.plants.count == 1)
+        #expect(viewModel.plants.first?.id == plant.id)
+        #expect(viewModel.plants.first?.name == "Monty")
+    }
+    
+    @Test func careViewModel_updatePlant_updatesLastWateredDate_whenActivityIsWatering() {
+        let viewModel = CareViewModel()
+        let originalDate = Date(timeIntervalSince1970: 1_000_000)
+        let recordDate = Date(timeIntervalSince1970: 2_000_000)
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: Date(), wateringIntervalDays: 7)
+        let record = CareRecord(plantID: plant.id, activityType: .watering, date: recordDate)
+        let updatedPlant = viewModel.updatePlant(after: record, originalPlant: plant)
+        
+        #expect(updatedPlant.lastWateredDate == recordDate)
+    }
+    
+    @Test func careViewModel_updatePlant_updatesLastFertilisedDate_whenActivityIsFertilising() {
+        let viewModel = CareViewModel()
+        let originalDate = Date(timeIntervalSince1970: 1_000_000)
+        let recordDate = Date(timeIntervalSince1970: 2_000_000)
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: originalDate, wateringIntervalDays: 7, lastFertilisedDate: nil, fertilisingIntervalDays: 28)
+        let record = CareRecord(plantID: plant.id, activityType: .fertilising, date: recordDate)
+        let updatedPlant = viewModel.updatePlant(after: record, originalPlant: plant)
+        
+        #expect(updatedPlant.lastFertilisedDate == recordDate)
+        #expect(updatedPlant.lastWateredDate == originalDate)
+    }
+    
+    @Test func careViewModel_selectSoilCondition_updatesRecommendation() {
+        let viewModel = CareViewModel()
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: Date(), wateringIntervalDays: 7)
+        viewModel.selectSoilCondition(.dry, for: plant)
+        
+        #expect(viewModel.selectedSoilCondition == .dry)
+        #expect(viewModel.recommendation?.shouldWater == true)
+    }
+    
+    @Test func careViewModel_selectSoilCondition_doesNotRecommendWatering_whenSoilIsWet() {
+        let viewModel = CareViewModel()
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: Date(), wateringIntervalDays: 7)
+        viewModel.selectSoilCondition(.wet, for: plant)
+        
+        #expect(viewModel.selectedSoilCondition == .wet)
+        #expect(viewModel.recommendation?.shouldWater == false)
+    }
+    
+    @Test func careViewModel_recordWatering_returnsUpdatedPlant_whenRecordIsValid() {
+        let repository = MockCareRepository()
+        let viewModel = CareViewModel()
+        let oldDate = Date(timeIntervalSince1970: 1_000_000)
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: oldDate, wateringIntervalDays: 7)
+        let updatedPlant = viewModel.recordwatering(for: plant, repository: repository)
+        
+        #expect(updatedPlant != nil)
+        #expect(updatedPlant?.lastWateredDate != oldDate)
+        #expect(viewModel.recordMessage == "Watering recorded successfully.")
+        #expect(repository.records.count == 1)
+    }
+    
+    @Test func careViewModel_recordWatering_returnsNil_whenWateringAlreadyRecordedToday() throws {
+        let repository = MockCareRepository()
+        let viewModel = CareViewModel()
+        let plant = Plant(name: "Monty", species: "Monstera deliciosa", imageName: "", lastWateredDate: Date(), wateringIntervalDays: 7)
+        let existingRecord = CareRecord(plantID: plant.id, activityType: .watering, date: Date())
+        
+        try repository.addCareRecord(existingRecord)
+        
+        let updatedPlant = viewModel.recordwatering(for: plant, repository: repository)
+        
+        #expect(updatedPlant == nil)
+        #expect(viewModel.recordMessage == "Watering has already been recorded today.")
+    }
+    
+    @Test func identificationViewModel_selectCandidate_updatesSelectionAndClearsManualSpecies() {
+        let viewModel = IdentificationViewModel()
+        viewModel.useManualSpecies = true
+        viewModel.manualSpecies = "Monstera adansonii"
+        
+        let candidate = PlantIdentificationCandidate(species: "Monstera deliciosa", confidence: 82)
+        viewModel.selectCandidate(candidate)
+        
+        #expect(viewModel.selectedCandidate?.species == "Monstera deliciosa")
+        #expect(viewModel.useManualSpecies == false)
+        #expect(viewModel.manualSpecies.isEmpty)
+    }
+    
+    @Test func identificationViewModel_confirmSelection_showsError_whenPlantNameIsMissing() {
+        let repository = MockCareRepository()
+        let viewModel = IdentificationViewModel()
+        let candidate = PlantIdentificationCandidate(species: "Monstera deliciosa", confidence: 82)
+        viewModel.selectCandidate(candidate)
+        viewModel.confirmSelection(imageData: Data(), careRepository: repository)
+        
+        #expect(viewModel.confirmedPlant == nil)
+        #expect(viewModel.errorMessage == "Please enter a plant name.")
+    }
+    
+    @Test func identificationViewModel_confirmSelection_createsPlant_whenSelectionIsValid() {
+        let repository = MockCareRepository()
+        repository.carePlans = [
+            PlantCarePlan(
+                species: "Monstera deliciosa",
+                genus: "Monstera",
+                wateringIntervalDays: 7,
+                fertilisingIntervalDays: 28,
+                waterGuidance: "Allow the top soil to dry slightly before watering.",
+                lightGuidance: "Bright indirect light.",
+                fertilisingGuidance: "Fertilise regularly during active growth.",
+                repottingGuidance: "Repot when needed."
+            )
+        ]
+
+        let viewModel = IdentificationViewModel()
+        let candidate = PlantIdentificationCandidate(species: "Monstera deliciosa", confidence: 82)
+
+        viewModel.plantName = "Monty"
+        viewModel.selectCandidate(candidate)
+        viewModel.confirmSelection(imageData: Data(), careRepository: repository)
+
+        #expect(viewModel.confirmedPlant != nil)
+        #expect(viewModel.confirmedPlant?.name == "Monty")
+        #expect(viewModel.confirmedPlant?.species == "Monstera deliciosa")
+        #expect(viewModel.confirmedPlant?.wateringIntervalDays == 7)
+        #expect(viewModel.errorMessage == nil)
+    }
 }
