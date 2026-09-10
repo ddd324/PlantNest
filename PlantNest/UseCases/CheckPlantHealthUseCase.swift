@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Checks a reported plant symptom and provides possible causes and care guidance.
 struct CheckPlantHealthUseCase {
     enum CheckPlantHealthError: Error {
         case missingSymptom

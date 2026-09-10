@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Assesses whether a plant should be watered based on the user's observed soil condition.
 struct AssessWateringNeedUseCase {
     
     enum AssessWateringError: Error {

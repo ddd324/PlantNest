@@ -7,12 +7,13 @@
 
 import Foundation
 
+/// Creates a plant after the user confirms its identification and name.
 struct ConfirmPlantIdentificationUseCase {
     
     enum ConfirmPlantIdentificationError: Error {
             case missingName
             case missingSpecies
-        }
+    }
     
     private let careRepository: CareRepository
     
@@ -33,6 +34,7 @@ struct ConfirmPlantIdentificationUseCase {
         
         let carePlan = try? getCarePlanUseCase.execute(species: species)
         
+        // Use default watering guidance if no matching care plan is available.
         return Plant(
             name: name,
             species: species,

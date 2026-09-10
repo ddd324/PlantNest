@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Records a plant care activity while preventing invalid or duplicate records.
 struct RecordCareActivityUseCase {
     
     enum RecordCareActivityError: Error {
@@ -27,6 +28,7 @@ struct RecordCareActivityUseCase {
             throw RecordCareActivityError.futureDate
         }
         
+        // Prevent the same care activity from being recorded twice on the same day.
         let existingRecords = try repository.fetchCareRecords(for: plant.id)
         let isDuplicate = existingRecords.contains { record in
             record.activityType == activityType && calendar.isDate(record.date, inSameDayAs: date)

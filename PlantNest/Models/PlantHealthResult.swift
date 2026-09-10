@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Represents the outcome of a plant health check, including a possible cause and care guidance.
 struct PlantHealthResult {
     let possibleCause: String
     let guidance: String

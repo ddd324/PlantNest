@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Generates today's and upcoming care tasks for the user's plants.
 struct GenerateCareScheduleUseCase {
     
     enum GenerateCareScheduleError: Error {
@@ -52,7 +53,7 @@ struct GenerateCareScheduleUseCase {
                 }
             }
             
-            //Fertilising
+            // Fertilising
             if let lastFertilisedDate = plant.lastFertilisedDate, let fertilisingIntervalDays = plant.fertilisingIntervalDays {
                 guard fertilisingIntervalDays > 0 else {
                     throw GenerateCareScheduleError.invalidFertilisingInterval

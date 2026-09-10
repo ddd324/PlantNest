@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Finds care guidance for a plant using an exact species match or genus fallback.
 struct GetCarePlanUseCase {
     
     enum GetCarePlanError: Error {
@@ -24,6 +25,7 @@ struct GetCarePlanUseCase {
             return exactPlan
         }
         
+        // Fall back to genus-level guidance when no exact species plan is available.
         let genus = species.split(separator: " ").first.map(String.init)
         
         guard let genus, let genusPlan = repository.fetchCarePlan(forGenus: genus) else {

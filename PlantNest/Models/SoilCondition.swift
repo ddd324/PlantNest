@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Represents the soil moisture condition observed by the user.
 enum SoilCondition: String, CaseIterable {
     case dry = "Dry"
     case slightlyMoist = "Slightly Moist"
