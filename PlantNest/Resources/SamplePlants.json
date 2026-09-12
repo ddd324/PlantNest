@@ -4,67 +4,61 @@
         "name": "Monty",
         "species": "Monstera deliciosa",
         "imageName": "monstera",
-        "lastWateredDate": "2026-08-25",
+        "lastWateredDate": "2026-09-05",
         "wateringIntervalDays": 7,
         "lastFertilisedDate": "2026-08-10",
-        "fertilisingIntervalDays": 28,
-        "waterGuidance": "Allow the top soil to dry slightly before watering.",
-        "lightGuidance": "Bright indirect light.",
-        "fertilisingGuidance": "Fertilise regularly during active growth.",
-        "repottingGuidance": "Repot when the plant outgrows its pot."
+        "fertilisingIntervalDays": 28
     },
     {
         "id": "22222222-2222-2222-2222-222222222222",
         "name": "Sunny",
         "species": "Snake Plant",
         "imageName": "snakePlant",
-        "lastWateredDate": "2026-08-28",
-        "wateringIntervalDays": 14,
-        "waterGuidance": "Allow the soil to dry well between waterings.",
-        "lightGuidance": "Tolerates low light but prefers bright indirect light.",
-        "fertilisingGuidance": "Fertilise lightly during active growth.",
-        "repottingGuidance": "Repot when roots become crowded."
+        "lastWateredDate": "2026-09-01",
+        "wateringIntervalDays": 14
     },
     {
         "id": "33333333-3333-3333-3333-333333333333",
         "name": "Lily",
         "species": "Peace Lily",
         "imageName": "peaceLily",
-        "lastWateredDate": "2026-08-29",
+        "lastWateredDate": "2026-09-06",
         "wateringIntervalDays": 5,
-        "lastFertilisedDate": "2026-08-05",
+        "lastFertilisedDate": "2026-08-15",
         "fertilisingIntervalDays": 28
     },
     {
         "id": "44444444-4444-4444-4444-444444444444",
         "name": "Penny",
         "species": "Golden Pothos",
-        "imageName": "",
-        "lastWateredDate": "2026-08-31",
+        "imageName": "goldenpothos",
+        "lastWateredDate": "2026-09-08",
         "wateringIntervalDays": 7
     },
     {
         "id": "55555555-5555-5555-5555-555555555555",
         "name": "Ruby",
         "species": "Rubber Plant",
-        "imageName": "",
-        "lastWateredDate": "2026-08-30",
-        "wateringIntervalDays": 10
+        "imageName": "rubberplant",
+        "lastWateredDate": "2026-09-02",
+        "wateringIntervalDays": 10,
+        "lastFertilisedDate": "2026-08-15",
+        "fertilisingIntervalDays": 28
     },
     {
         "id": "66666666-6666-6666-6666-666666666666",
         "name": "Fern",
         "species": "Boston Fern",
-        "imageName": "",
-        "lastWateredDate": "2026-09-01",
+        "imageName": "bostonfern",
+        "lastWateredDate": "2026-09-09",
         "wateringIntervalDays": 4
     },
     {
         "id": "77777777-7777-7777-7777-777777777777",
         "name": "Spike",
         "species": "Aloe Vera",
-        "imageName": "",
-        "lastWateredDate": "2026-08-27",
+        "imageName": "aloevera",
+        "lastWateredDate": "2026-09-10",
         "wateringIntervalDays": 14
     },
     {
@@ -72,7 +66,7 @@
         "name": "Figgy",
         "species": "Fiddle Leaf Fig",
         "imageName": "",
-        "lastWateredDate": "2026-08-30",
+        "lastWateredDate": "2026-09-03",
         "wateringIntervalDays": 7
     }
 ]
