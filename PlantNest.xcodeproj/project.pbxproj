@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		427AE97A30554DC600E21B36 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 427AE97930554DBF00E21B36 /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		427AE89E30503D6A00E21B36 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -19,6 +23,7 @@
 /* Begin PBXFileReference section */
 		427AE6DE3045C09E00E21B36 /* PlantNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlantNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		427AE89A30503D6A00E21B36 /* PlantNestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlantNestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		427AE97930554DBF00E21B36 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -55,6 +60,7 @@
 		427AE6D53045C09E00E21B36 = {
 			isa = PBXGroup;
 			children = (
+				427AE97930554DBF00E21B36 /* README.md */,
 				427AE6E03045C09E00E21B36 /* PlantNest */,
 				427AE89B30503D6A00E21B36 /* PlantNestTests */,
 				427AE6DF3045C09E00E21B36 /* Products */,
@@ -179,6 +185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				427AE97A30554DC600E21B36 /* README.md in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
